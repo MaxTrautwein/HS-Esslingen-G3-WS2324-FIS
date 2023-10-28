@@ -18,8 +18,23 @@ logger.addHandler(ch)
 app = Flask(__name__)
 CORS(app)
 
-@app.get('/Appointments')
+@app.route('/')
 def GetAppointments():
-    logger.warning("TODO")
-    return "TODO"
+    return render_template('index.html')
+
+@app.route('/Login')
+def GetLogin():
+    return render_template('login.html')
+
+@app.route('/canceled')
+def GetCanceled():
+    return render_template('canceled.html')
+
+@app.route('/Lecturer')
+def GetLecturer():
+    return render_template('lecturer.html')
+
+@app.route('/Admin')
+def GetAdmin():
+    return render_template('admin.html')
 
