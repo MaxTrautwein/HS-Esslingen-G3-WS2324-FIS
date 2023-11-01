@@ -1,0 +1,15 @@
+.topRight{
+right: 1em;
+    top: 1em;
+    width: auto;
+    position: absolute;
+}
+
+.relative{
+    position: relative;
+}
+
+
+.canceld{
+background-color: #CFCFCF;
+}
