@@ -1,4 +1,57 @@
-body {
-    margin: 0;
-    background-color: lightcoral;
+.HS_logo {
+    width: 200px;
+    height: 80px;
+    background-image: url(../../templates/hs_logo.jpg);
 }
+
+header {
+    height: 20%;
+
+}
+
+body {
+    height: 100vh;
+}
+
+.delimiter {
+    height: 10%;
+    background-color: rgb(235, 55, 55);
+}
+
+.IO {
+    text-align: center;
+    width: 100%;
+}
+
+#username {
+    width: 17%;
+}
+
+#password {
+    width: 17%;
+}
+
+.image {
+    height: 10vh;
+}
+
+#logo {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin-left: 38.7vw;
+}
+
+.wrapper {
+    height: 200px;
+    position: relative;
+}
+
+footer {
+
+}
+
+
+
