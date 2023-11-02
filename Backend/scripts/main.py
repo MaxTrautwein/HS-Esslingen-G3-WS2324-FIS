@@ -27,7 +27,7 @@ def GetLogin():
     if request.method == 'POST':
         Username = request.form['username']
         Password = request.form['password']
-        return render_template('canceled.html')
+        return redirect()#hier nach merch die auf webserver redirecten
         
     else:
         return render_template('login.html')
