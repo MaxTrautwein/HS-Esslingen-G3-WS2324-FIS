@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lecturer</title>
+    <link href="libs/5.3.2_dist_css_bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="libs/5.3.2_dist_js_bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="libs/jquery-3.7.1.min.js"></script>
+    <script src="Lecturer.js"></script>
+
+    <link href="libs/fontawesome6/css/fontawesome.css" rel="stylesheet">
+    <link href="libs/fontawesome6/css/brands.css" rel="stylesheet">
+    <link href="libs/fontawesome6/css/solid.css" rel="stylesheet">
+
+    <link href="Lecturer.css" rel="stylesheet">
+
+
+
+</head>
+<body>
+
+<template id="CardTemplate">
+    <div class="card">
+            <h5 class="card-header"><span  data-template="name"></span></h5>
+        <div class="card-body relative">
+            <h5 class="card-title"><span  data-template="date"></span></h5>
+            <p class="card-text"><span  data-template="start"></span> Uhr - <span data-template="end"></span> Uhr</p>
+            <div class="topRight" data-template="toggle">
+                <i class="fa-solid fa-ban fa-xl" data-template="cancel"></i>
+                <i class="fa-solid fa-check fa-2xl" data-template="running"></i>
+            </div>
+        </div>
+    </div>
+</template>
+
+<header>
+
+    <h1> TODO Add a Header</h1>
+
+</header>
+
+
+<div id="CardContainer" class="limiter">
+
+
+</div>
+
+</body>
+</html>

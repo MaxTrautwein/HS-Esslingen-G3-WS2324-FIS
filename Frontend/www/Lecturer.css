@@ -1,0 +1,21 @@
+.topRight{
+right: 1em;
+    top: 1em;
+    width: auto;
+    position: absolute;
+}
+
+.relative{
+    position: relative;
+}
+
+.limiter{
+    width: 80vw;
+    max-width: 60em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.canceld{
+background-color: #CFCFCF;
+}
