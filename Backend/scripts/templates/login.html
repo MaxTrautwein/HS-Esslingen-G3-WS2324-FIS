@@ -16,22 +16,31 @@
     </header>
 
 
-    <div class="IO">
-        <div class="wrapper">
-            <img src="{{url_for('static', filename='hs_logo.jpg')}}" alt="" id="logo" width="400" height="200">
-        </div>
+        <div class="IO">
+            <div class="wrapper">
+                <img src="{{url_for('static', filename='hs_logo.jpg')}}" alt="" id="logo" width="400" height="200">
+            </div>
+                
+            <h1>Login</h1>
             
-        <h1>Login</h1>
-        <div class="Username">
-            <input type="text" name="Username" id="username" placeholder="Nutzername"><br><br>
+            <form action="/" method="post">
+                <div class="labelHolder">
+                    <label for="username">Benutzername</label><br><br>
+                    <label for="password">Passwort</label>
+                </div>
+                <div class="inputFields">
+                    <input type="text" name="username" id="username"><br><br>
+                    <input type="password" name="password" id="password"><br><br>
+                    <input type="submit" value="Login"><br><br>
+                </div>
+            </form>
         </div>
-        <div class="Password">
-            <input type="password" name="password" id="password" placeholder="Password">
-        </div>
-    </div>
+        
 
     <footer>
         
     </footer>
 </body>
 </html>
+
+    

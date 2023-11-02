@@ -1,5 +1,5 @@
 import logging
-from flask import Flask, request, jsonify, render_template, abort
+from flask import Flask, request, jsonify, render_template, abort, redirect
 from flask_cors import CORS
 from datetime import datetime
 
@@ -22,9 +22,16 @@ CORS(app)
 def GetAppointments():
     return render_template('index.html')
 
-@app.route('/Login')
+@app.route('/Login', methods=['POST', 'GET'])
 def GetLogin():
-    return render_template('login.html')
+    if request.method == 'POST':
+        Username = request.form['username']
+        Password = request.form['password']
+        return render_template('canceled.html')
+        
+    else:
+        return render_template('login.html')
+
 
 @app.route('/canceled')
 def GetCanceled():
