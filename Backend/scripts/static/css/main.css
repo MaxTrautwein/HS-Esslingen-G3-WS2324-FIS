@@ -1,0 +1,72 @@
+button {
+    width: 200px;
+    height: 80px;
+    background-image: url(/static/hs_logo.jpg);
+    background-size: cover;
+    border: none;
+    cursor: pointer;
+    
+}
+
+header {
+    height: 20%;
+
+}
+
+body {
+    height: 100vh;
+}
+
+.delimiter {
+    height: 10%;
+    background-color: rgb(235, 55, 55);
+}
+
+.IO {
+    
+    width: 100%;
+    float: left;
+}
+
+h1 {
+    text-align: center;
+}
+
+
+
+.image {
+    height: 10vh;
+}
+
+#logo {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin-left: 38.7vw;
+}
+
+.wrapper {
+    height: 200px;
+    position: relative;
+}
+
+
+
+.labelHolder {
+    
+    float: left;
+    margin-left: 39.5vw;
+    margin-right: 1em;
+}
+
+.inputFields {
+    float: left;
+    text-align: center;
+    
+}
+
+
+
+

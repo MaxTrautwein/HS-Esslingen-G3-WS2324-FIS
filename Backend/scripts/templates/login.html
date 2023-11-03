@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>FIS</title>
+</head>
+<body>
+    <header>
+        <button type="button" class="HS_logo">
+
+        </button>
+        <div class="delimiter">
+        </div>
+    </header>
+
+
+        <div class="IO">
+            <div class="wrapper">
+                <img src="{{url_for('static', filename='hs_logo.jpg')}}" alt="" id="logo" width="400" height="200">
+            </div>
+                
+            <h1>Login</h1>
+            
+            <form action="/Login" method="post">
+                <div class="labelHolder">
+                    <label for="username">Benutzername</label><br><br>
+                    <label for="password">Passwort</label>
+                </div>
+                <div class="inputFields">
+                    <input type="text" name="username" id="username"><br><br>
+                    <input type="password" name="password" id="password"><br><br>
+                    <input type="submit" value="Login"><br><br>
+                </div>
+            </form>
+        </div>
+        
+
+    <footer>
+        
+    </footer>
+</body>
+</html>
+
+    

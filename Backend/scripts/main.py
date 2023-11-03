@@ -1,5 +1,5 @@
 import logging
-from flask import Flask, request, jsonify, render_template, abort
+from flask import Flask, request, jsonify, render_template, abort, redirect
 from flask_cors import CORS
 from datetime import datetime
 
@@ -18,8 +18,30 @@ logger.addHandler(ch)
 app = Flask(__name__)
 CORS(app)
 
-@app.get('/Appointments')
+@app.route('/')
 def GetAppointments():
-    logger.warning("TODO")
-    return "TODO"
+    return render_template('index.html')
+
+@app.route('/Login', methods=['POST', 'GET'])
+def GetLogin():
+    if request.method == 'POST':
+        Username = request.form['username']
+        Password = request.form['password']
+        return redirect()#hier nach merch die auf webserver redirecten
+        
+    else:
+        return render_template('login.html')
+
+
+@app.route('/canceled')
+def GetCanceled():
+    return render_template('canceled.html')
+
+@app.route('/Lecturer')
+def GetLecturer():
+    return render_template('lecturer.html')
+
+@app.route('/Admin')
+def GetAdmin():
+    return render_template('admin.html')
 
