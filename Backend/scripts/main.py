@@ -2,7 +2,9 @@ import logging
 from flask import Flask, request, jsonify, render_template, abort, redirect
 from flask_cors import CORS
 from datetime import datetime
-
+import db
+import Appointment
+import json
 
 logger = logging.getLogger('FIS')
 logger.setLevel(logging.DEBUG)
@@ -17,6 +19,8 @@ logger.addHandler(ch)
 
 app = Flask(__name__)
 CORS(app)
+
+Database = db.Database()
 
 @app.route('/')
 def GetAppointments():
@@ -45,3 +49,25 @@ def GetLecturer():
 def GetAdmin():
     return render_template('admin.html')
 
+
+@app.get("/Appointments")
+def GetAppointmentsList():
+    id = request.args.get('id')
+    if (id is None):
+        logger.info(request)
+        abort(400)
+    data = []
+    
+    Apps =  Database.GetAllAppointmetsFor(id)
+
+    for ap in Apps:
+        data.append(ap.toJson())
+    
+    return data
+
+
+@app.route('/UpdateCanceled', methods=['POST'])
+def UpdateCanceled():
+    content = request.json
+    Database.UpdateCanceled(content["canceled"],content["id"],datetime.strptime(content["date"], "%d.%m.%Y"))
+    return {}
