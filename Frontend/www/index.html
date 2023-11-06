@@ -6,6 +6,12 @@
     <title>FIS</title>
 </head>
 <body>
-    Hello World
+    <h1>Variable an JavaScript übergeben</h1>
+    <p id="demo"></p>
+
+    <script>
+        var variableFromPython = "{{ variable }}";
+        document.getElementById("demo").innerHTML = variableFromPython;
+    </script>
 </body>
 </html>

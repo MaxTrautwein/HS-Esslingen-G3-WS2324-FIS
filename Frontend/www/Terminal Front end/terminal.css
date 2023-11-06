@@ -1,0 +1,318 @@
+:root {
+    --light-cold: #2a9d8f;
+    --dark-cold: #264653;
+    --light-warm: #f4a261;
+    --dark-warm: #e76f51;
+    --dark: #0a1316;
+    --light: #c6ced1;
+}
+
+*{
+    margin: 0;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+html, body{
+    height: 100%;
+}
+
+.limiter {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+main{
+    padding-top: 30px;
+    flex-grow: 1;
+}
+
+.header {
+    height: 12vh;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 5px solid red;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: block;
+    width: 24vh;
+    height: 10vh;
+    background-image: url("./images/HSLogo.svg");
+    margin: 10px;
+    margin-right: 5vw;
+    outline: none;
+    border: none;
+    background-repeat: no-repeat;
+}
+
+.logo:hover {
+    background-color: rgb(218, 217, 217);
+}
+
+.letters {
+    display: block;
+    width: 15vh;
+    height: 10vh;
+    background-image: url("./images/letters.png");
+    margin: 10px;
+    margin-right: 0px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.access{
+    display: flex;
+    flex-direction: row;
+}
+
+.flag{
+    display: block;
+    width: 15vh;
+    height: 10vh;
+    background-image: url("./images/germany.png");
+    margin: 10px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-left: 0px;
+
+}
+
+
+.cancelIcon {
+    font-size: 60px !important;
+    color: red;
+}
+
+.raumsuche,.studiengang{
+    font-size: larger;
+}
+
+
+.cancelButton{
+    background-color: white;
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    border: none;
+}
+
+.search {
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: center;
+    height: 5vh;
+    width: 10vw;
+    margin-right: 5vw;
+    border-radius: 20px;
+}
+
+#myDropdown {
+    text-align: center;
+    height: 5vh;
+    width: 12vh;
+    margin-right: 5vw;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.btn {
+    margin-top: 3vh;
+    margin-bottom: auto;
+    text-align: center;
+    height: 4vh;
+    width: 10vh;
+    margin-right: 5vw;
+    border: none;
+    background: none;
+}
+
+header, footer {
+    background-color: white;
+}
+
+.header, .main, .footer{
+    padding: 0 0;
+}
+
+
+button:hover{
+    color: red;
+    cursor: pointer;
+}
+
+
+.timeSlot {
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    min-height: 8vh;
+    border-top: 1px solid black;
+}
+
+.timeContainer {
+    display: flex;
+    width: 4vw;
+    text-align: right;
+    padding-right: 30px;
+    align-items: center;
+}
+
+.appointment {
+    border: 1px solid black;
+    width: 10vw;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.appointment.cancelled {
+    background-color: red;
+}
+
+.appointment:hover, .cancelledAppointment:hover {
+    background-color: rgb(202, 201, 201);
+}
+
+.appointment>.name{
+    padding-top: 15px;
+}
+
+.appointment>.room{
+    text-align: right;
+    width: 60%;
+}
+
+.cancelledContainer {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    min-height: 8vh;
+}
+
+.cancelledAppointment {
+    border: 1px solid black;
+    width: 10vw;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 8vh;
+}
+
+.details {
+    width: 80vw;
+    display: flex;
+    flex-direction: row;
+}
+
+.textContainer{
+    font-size:x-large;
+    padding-left: 10vw;
+    line-height: 5vh;
+}
+
+#routeButton {
+    height: 100px;
+    align-self: flex-end;
+    margin-left: 10vw;
+    background: none;
+    border: none;
+    font-size: 50px;
+    color: rgb(0, 0, 180);
+}
+
+.mapIcon {
+    font-size: 60px !important;
+    color: rgb(0, 0, 180);
+}
+
+#routeButton:hover, .mapIcon:hover{
+    color: red;
+}
+
+.routeContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.imageContainer{
+    height: 100%;
+    width: 25vw;
+    display: flex;
+    background-position: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.imageContainer>img{
+    width: 100%;
+    border: 2px solid black;
+}
+
+.routeMiddleContainer{
+    height: 70%;
+    width: 25vw;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.routeSetting{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border: 1px solid black;
+    width: 30%;
+    height: 8vh;
+    font-size: xx-large;
+}
+
+.setting1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: rgb(197, 197, 197);
+    border: 1px solid grey;
+}
+
+.setting2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.setting1:hover, .setting2:hover{
+    background-color: rgb(245, 165, 165);
+}
+
+.settingIcon{
+    font-size: 50px !important;
+}
+
+
+
+
+
+
