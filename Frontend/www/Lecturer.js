@@ -1,44 +1,51 @@
 
+const userID = 1;
+const URL = "http://localhost:5000/"
+window.addEventListener("load",() => init());
 
-window.addEventListener("load",() => BuildCards());
+function  init(){
 
+    httpGetAsync(URL + "Appointments?id=" + userID,BuildCards)
+}
 
+function httpGetAsync(theUrl, callback) {
+    let xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(JSON.parse(xmlHttp.responseText));
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous
+    xmlHttp.send(null);
+}
 
-function BuildCards() {
-    const Appointments = [
-        {
-            id: 1,
-        name:"SWB3",
-        date:"Donnerstag 12.Oct",
-        start:"10:00",
-        end:"12:15",
-            canceld:false
-        },{
-            id: 2,
-            name:"SWB4",
-            date:"Donnerstag 12.Oct",
-            start:"10:00",
-            end:"12:15",
-            canceld:false
-        },{
-            id: 3,
-            name:"SWB5",
-            date:"Donnerstag 12.Oct",
-            start:"10:00",
-            end:"12:15",
-            canceld:false
-        },{
-            id: 4,
-            name:"SWB6",
-            date:"Donnerstag 12.Oct",
-            start:"10:00",
-            end:"12:15",
-            canceld:false
+function GetJson(url,callback){
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
         }
+    })
+        .then(response => response.json())
+        .then(response => callback(response));
 
-    ];
+}
+
+function PostJson(jsonData,url){
+    let data = JSON.stringify(jsonData);
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: data
+    });
+
+}
+
+function  BuildCards(Appointments) {
     const CardsContainer = $("#CardContainer");
-
 
     for(let i = 0; i < Appointments.length; i++){
         let Apointment = Appointments[i];
@@ -55,37 +62,42 @@ function BuildCards() {
 function GetCard(name,date,start,end,id,status){
     var t = document.querySelector('#CardTemplate');
     var clone = document.importNode(t.content, true); // where true means deep copy
-    var $row = $(clone);
-    $row.find("[data-template='name']").text(name);
-    $row.find("[data-template='date']").text(date);
-    $row.find("[data-template='start']").text(start);
-    $row.find("[data-template='end']").text(end);
-    const toggle = $row.find("[data-template='toggle']")[0];
-    toggle.id = id;
+    var card = $(clone);
+    card.find("[data-template='name']").text(name);
+    card.find("[data-template='date']").text(date);
+    card.find("[data-template='start']").text(start);
+    card.find("[data-template='end']").text(end);
+    const toggle = card.find("[data-template='toggle']")[0];
+    toggle.setAttribute("data-id",id)
+    toggle.setAttribute("data-date",date)
     toggle.setAttribute("data-status",status);
     toggle.addEventListener("click",UpdateCancelStatus);
 
     if (status){
         //Set Red
-        $row.classList.add("canceld");
-        $row.find("[data-template='cancel']")[0].setAttribute("style","color: #e01b24;");
+        card.find("[data-template='card']")[0].setAttribute("class","canceld card");
+        card.find("[data-template='cancel']")[0].setAttribute("style","color: #e01b24;");
 
     }else {
         //Set Green
-        $row.find("[data-template='running']")[0].setAttribute("style","color: #2ec27e;");
-
+        card.find("[data-template='running']")[0].setAttribute("style","color: #2ec27e;");
     }
 
-    return $row;
+    return card;
 }
 
 function UpdateCancelStatus(){
-    const id = this.id;
+    const id = this.getAttribute("data-id");
+    const date = this.getAttribute("data-date");
     //TODO Tell backend the new Status
 
 
     const status = (this.getAttribute("data-status") === 'true');
     const  canceld = !status;
+
+    PostJson({"canceled":canceld,"id":id,"date":date},URL + "UpdateCanceled");
+
+
     this.setAttribute("data-status",canceld);
     const card = this.parentElement.parentElement;
 
@@ -114,28 +126,3 @@ function UpdateCancelStatus(){
 
 }
 
-
-/*
-*  <div class="card">
-        <h5 class="card-header">SWB3-SW-Softwaretechnik</h5>
-        <div class="card-body">
-            <h5 class="card-title">Do. 18.10 </h5>
-            <p class="card-text">8:00 Uhr - 11:15 Uhr</p>
-        </div>
-    </div>
-    <div class="card">
-        <h5 class="card-header">SWB3-SW-Softwaretechnik</h5>
-        <div class="card-body">
-            <h5 class="card-title">Do. 18.10 </h5>
-            <p class="card-text">8:00 Uhr - 11:15 Uhr</p>
-        </div>
-    </div>
-    <div class="card">
-        <h5 class="card-header">SWB3-SW-Softwaretechnik</h5>
-        <div class="card-body">
-            <h5 class="card-title">Do. 18.10 </h5>
-            <p class="card-text">8:00 Uhr - 11:15 Uhr</p>
-        </div>
-    </div>
-*
-* */
