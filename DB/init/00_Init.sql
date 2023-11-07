@@ -6,6 +6,7 @@ drop table if exists Room;
 drop table if exists Appointments;
 drop table if exists TargetGroups;
 drop table if exists ClosedDays;
+drop table if exists DateCanceled;
 
 
 create TABLE TargetGroup(
@@ -51,10 +52,15 @@ create table Appointments(
     description text not null ,
     startTime time with time zone not null ,
     endTime time with time zone not null,
-    canceled boolean not null ,
     lecturer integer references Users(id) not null ,
     room integer references Room(id) not null ,
     dateSpan integer references DateSpan not null
+);
+
+create table DateCanceled(
+    id serial primary key,
+    date date not null,
+    appointment integer references  Appointments(id)
 );
 
 create table TargetGroups(
