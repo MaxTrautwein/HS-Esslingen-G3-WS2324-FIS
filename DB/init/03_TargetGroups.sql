@@ -6,8 +6,11 @@ insert into targetgroup (name) values ('SWB3-SW'),
                                       ('TIB3');
 
 insert into targetgroups (targetgroup, appointment) VALUES (3,1),
-                                                           (4,1),
-                                                           (1,2),
+                                                           (4,2),
                                                            (1,3),
-                                                           (1,4),
-                                                           (1,5);
+                                                           (2,4),
+                                                           (5,5),
+                                                           (6,6),
+                                                           (1,7),
+                                                           (3,8),
+                                                           (2,9);
