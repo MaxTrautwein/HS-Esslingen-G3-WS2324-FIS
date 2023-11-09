@@ -2,6 +2,7 @@ import psycopg2
 import time
 import logging
 import Appointment
+import datecondition
 
 
 logger = logging.getLogger('FIS')
@@ -22,7 +23,60 @@ class Database:
 
     def DeInit(self):
         self.con.close()
+    
+    def FetchRepeateInfo(self,dateSpan):
+        self.cur.execute(f"select datestart as anfang, dateend as ende, repeat from  datespan where datespan.id = {dateSpan}")
+        return self.cur.fetchone()
 
+    def IsAppointmentCanceld(self,date,id):
+        self.cur.execute(f"select 1 from datecanceled where date = '{date}' and appointment = {id};")
+        return self.cur.fetchone() is not None
+
+    def GetIntrestedGroups(self,app_ID):
+        self.cur.execute(f"select targetgroup from targetgroups where appointment = {app_ID};")
+        data = self.cur.fetchall()
+        res = []
+        for group in data:
+            res.append(group[0])
+        return res
+
+    def GetAllGroups(self):
+        self.cur.execute("select name from targetgroup;")
+        data = self.cur.fetchall()
+        res = []
+        for group in data:
+            res.append(group[0])
+        return res
+    
+    # Not an Efficiant way to handel this, but the alternitive would take a substantioal ammount of effort
+    # With the Time limitation of this project this is not resonable at that point
+    # With the small ammount of data at play here his might not be as bad as one might expect
+    def GetAllAppointmets(self):
+        self.cur.execute(f"select * from appointments;")
+        return self.cur.fetchall()
+
+    def GetAllAppointmetsToday(self):
+        data = self.GetAllAppointmets()
+        Apps = []
+        cond = datecondition.datecondition(0)
+        for App in data:
+            Abstract =  Appointment.Appointment_Abstract(*App)
+            Appointments = Abstract.resolveToAppointment_Where(self,cond.Today)
+            for ap in Appointments:
+                Apps.append(ap)
+        return Apps
+
+    def GetAllCanceldAppointmetsForNDays(self,dur):
+        data = self.GetAllAppointmets()
+        Apps = []
+        cond = datecondition.datecondition(dur)
+        for App in data:
+            Abstract =  Appointment.Appointment_Abstract(*App)
+            Appointments = Abstract.resolveToAppointment_Where(self,cond.Future_nDays)
+            for ap in Appointments:
+                if (ap.canceled):
+                    Apps.append(ap)
+        return Apps
 
     def GetAllAppointmetsFor(self,Lectuerer):
         self.cur.execute(f"select * from appointments where appointments.lecturer = {Lectuerer};")
@@ -43,4 +97,6 @@ class Database:
             self.cur.execute(f"delete from datecanceled where date = '{date}' and appointment = {id};")
         self.con.commit()            
 
-    
+    def GetRoomName(self,id):
+        self.cur.execute(f"select name from room where id = {id};")
+        return self.cur.fetchone()
