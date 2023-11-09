@@ -10,3 +10,9 @@ header{
     position: sticky;
     top: 0;
 }
+
+header button{
+    right: 2em;
+    top: 2.5em;
+    position: fixed;
+}
