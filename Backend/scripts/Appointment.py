@@ -17,11 +17,11 @@ class Appointment_Abstract:
             self.lecturer = lecturer
             self.room = room
             self.dateSpan = dateSpan
+
+    
     def resolveToAppointment_Where(self,database,DateCondition):
-         print("TODO")
          today = date.today()
-         database.cur.execute(f"select datestart as anfang, dateend as ende, repeat from  datespan where datespan.id = {self.dateSpan}")
-         start, end, repeate = database.cur.fetchone()
+         start, end, repeate = database.FetchRepeateInfo(self.dateSpan)
          if (repeate == 0 and DateCondition(start,today)):
               return [Appointment(self,start)]
          #In this case We need to get all futer Events
@@ -33,10 +33,9 @@ class Appointment_Abstract:
               if (DateCondition(event,today)):
                    Appointments.append(Appointment(self,event,database))
          return Appointments
+
     def resolveToAppointment(self,database):
-         print("TODO")
-         database.cur.execute(f"select datestart as anfang, dateend as ende, repeat from  datespan where datespan.id = {self.dateSpan}")
-         start, end, repeate = database.cur.fetchone()
+         start, end, repeate = database.FetchRepeateInfo(self.dateSpan)
          if (repeate == 0):
               return [Appointment(self,start)]
          #In this case We need to get all futer Events
@@ -61,14 +60,14 @@ class Appointment:
             self.description = abstractApp.description
             self.startTime = abstractApp.startTime
             self.endTime = abstractApp.endTime
-            #TODO Use DateCancled
-            logger.info(f"select 1 from datecanceled where date = '{date}' and appointment = {self.id};")
-            Database.cur.execute(f"select 1 from datecanceled where date = '{date}' and appointment = {self.id};")
-            self.canceled = Database.cur.fetchone() is not None
+
+            self.canceled = Database.IsAppointmentCanceld(date,self.id)
+            self.groups = Database.GetIntrestedGroups(self.id)
+
             self.lecturer = abstractApp.lecturer
             self.room = abstractApp.room
             self.date = date
     
     def toJson(self):
         return {"id":self.id,"name":self.name,"description":self.description,"start":self.startTime.strftime("%H:%M"),
-                "end":self.endTime.strftime("%H:%M"),"lecturer":self.lecturer,"date":self.date.strftime("%d.%m.%Y"),"canceld":self.canceled}
+                "end":self.endTime.strftime("%H:%M"),"lecturer":self.lecturer,"date":self.date.strftime("%d.%m.%Y"),"canceld":self.canceled,"groups":self.groups}

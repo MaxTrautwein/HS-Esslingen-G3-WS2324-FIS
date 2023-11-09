@@ -23,6 +23,22 @@ class Database:
 
     def DeInit(self):
         self.con.close()
+    
+    def FetchRepeateInfo(self,dateSpan):
+        self.cur.execute(f"select datestart as anfang, dateend as ende, repeat from  datespan where datespan.id = {dateSpan}")
+        return self.cur.fetchone()
+
+    def IsAppointmentCanceld(self,date,id):
+        self.cur.execute(f"select 1 from datecanceled where date = '{date}' and appointment = {id};")
+        return self.cur.fetchone() is not None
+
+    def GetIntrestedGroups(self,app_ID):
+        self.cur.execute(f"select targetgroup from targetgroups where appointment = {app_ID};")
+        data = self.cur.fetchall()
+        res = []
+        for group in data:
+            res.append(group[0])
+        return res
 
     # Sehr ineffizent, aber vermustlich soper aufwändig das besser zu machen
     def GetAllAppointmetsToday(self):
