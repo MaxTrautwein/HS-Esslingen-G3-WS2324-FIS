@@ -40,6 +40,15 @@ class Database:
             res.append(group[0])
         return res
 
+    def GetAllGroups(self):
+        self.cur.execute("select name from targetgroup;")
+        data = self.cur.fetchall()
+        res = []
+        for group in data:
+            res.append(group[0])
+        return res
+    
+    
     # Sehr ineffizent, aber vermustlich soper aufwändig das besser zu machen
     def GetAllAppointmetsToday(self):
         self.cur.execute(f"select * from appointments;")

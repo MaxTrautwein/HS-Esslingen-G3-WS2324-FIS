@@ -86,7 +86,7 @@ def GetAppointmentsToday():
 
 @app.get("/Targetgroups")
 def GetTargetgroups():
-    return "TODO"
+    return Database.GetAllGroups()
 
 @app.get("/CanceledApp")
 def GetCanceledApps():
