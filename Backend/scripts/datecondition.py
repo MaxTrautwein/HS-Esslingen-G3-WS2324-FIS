@@ -11,7 +11,7 @@ class datecondition:
         return event == today
     
     def Future(self,event,end):
-        return event < end
+        return event <= end
     
     def Future_nDays(self,event,today):
         today += timedelta(days=self.dur)

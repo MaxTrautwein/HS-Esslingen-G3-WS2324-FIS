@@ -48,11 +48,15 @@ class Database:
             res.append(group[0])
         return res
     
-    
-    # Sehr ineffizent, aber vermustlich soper aufwändig das besser zu machen
-    def GetAllAppointmetsToday(self):
+    # Not an Efficiant way to handel this, but the alternitive would take a substantioal ammount of effort
+    # With the Time limitation of this project this is not resonable at that point
+    # With the small ammount of data at play here his might not be as bad as one might expect
+    def GetAllAppointmets(self):
         self.cur.execute(f"select * from appointments;")
-        data = self.cur.fetchall()
+        return self.cur.fetchall()
+
+    def GetAllAppointmetsToday(self):
+        data = self.GetAllAppointmets()
         Apps = []
         cond = datecondition.datecondition(0)
         for App in data:
@@ -60,6 +64,18 @@ class Database:
             Appointments = Abstract.resolveToAppointment_Where(self,cond.Today)
             for ap in Appointments:
                 Apps.append(ap)
+        return Apps
+
+    def GetAllCanceldAppointmetsForNDays(self,dur):
+        data = self.GetAllAppointmets()
+        Apps = []
+        cond = datecondition.datecondition(dur)
+        for App in data:
+            Abstract =  Appointment.Appointment_Abstract(*App)
+            Appointments = Abstract.resolveToAppointment_Where(self,cond.Future_nDays)
+            for ap in Appointments:
+                if (ap.canceled):
+                    Apps.append(ap)
         return Apps
 
     def GetAllAppointmetsFor(self,Lectuerer):
