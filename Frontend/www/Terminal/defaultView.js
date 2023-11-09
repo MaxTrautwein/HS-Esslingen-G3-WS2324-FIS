@@ -1,3 +1,5 @@
+const URL = "http://localhost:5000/"
+
 window.addEventListener('load', () => defaultView.init());
 
 const defaultView = {
@@ -44,7 +46,38 @@ function generateDefault(filter) {
     }
 }
 
+
+function getJson(url) {
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+}
+
 function generateCancelled() {
+    const jsonPromise = getJson(URL + "CanceledApp?dur=7");
+    jsonPromise.then(data => {
+        data.forEach((item, index) => {
+            // Your logic for each item here
+            console.log(item); // Example: printing each item to the console
+        });
+    });
+}
+
+
+function generateCanceslled() {
     const oldMain = document.querySelector("main"); 
     const newMain = document.createElement("main");
 
@@ -54,7 +87,8 @@ function generateCancelled() {
     date.innerText = `${currentDate.getDate()}.${currentDate.getMonth()+1}.${currentDate.getFullYear()} ausfallende Termine:`;
     cancelledContainer.appendChild(date);
 
-    Appointments.forEach((item, index) => {
+
+    cancelled.forEach((item, index) => {
         if(item.canceld){
             const appointment = elementWithClasses("div", "cancelledAppointment");
             cancelledContainer.appendChild(appointment)
@@ -191,33 +225,50 @@ function generateTimeSlot(number, filter) {
     timeContainer.appendChild(h1);
     timeSlot.appendChild(timeContainer);
 
-    Appointments.forEach((item, index) => {
-        if((timeSlots[number] == item.start && filter == item.name) || (timeSlots[number] == item.start && filter == "all") ){
-            const appointment = elementWithClasses("div", "appointment");
-            if(item.canceld){
-                appointment.classList.add("cancelled");
+    const jsonPromise = getJson(URL + "AppointmentsToday");
+    jsonPromise.then(appointments => {
+        appointments.forEach((item, index) => {
+            if((timeSlots[number] == item.start && filter == item.name) || (timeSlots[number] == item.start && filter == "all") ){
+                const appointment = elementWithClasses("div", "appointment");
+                if(item.canceld){
+                    appointment.classList.add("cancelled");
+                }
+
+                const nameContainer = elementWithClasses("div", "name");
+                const roomContainer = elementWithClasses("div", "room");
+                const name = document.createElement("h2");
+                const room = document.createElement("h3");
+                name.innerText = item.name;
+                room.innerText = item.room;
+                nameContainer.appendChild(name);
+                roomContainer.appendChild(room);
+                appointment.appendChild(nameContainer);
+                appointment.appendChild(roomContainer);
+
+                appointment.addEventListener("click", () => {
+                    generateDetails(item);
+                });
+
+                timeSlot.appendChild(appointment)
             }
-
-            const nameContainer = elementWithClasses("div", "name");
-            const roomContainer = elementWithClasses("div", "room");
-            const name = document.createElement("h2");
-            const room = document.createElement("h3");
-            name.innerText = item.name;
-            room.innerText = item.room;
-            nameContainer.appendChild(name);
-            roomContainer.appendChild(room);
-            appointment.appendChild(nameContainer);
-            appointment.appendChild(roomContainer);
-
-            appointment.addEventListener("click", () => {
-                generateDetails(item);
-            });
-
-            timeSlot.appendChild(appointment)
-        }
+        });
+        return timeSlot;
     });
-    return timeSlot;
 }
+
+
+function generateDropdown(){
+    const dropdown = document.getElementById("myDropdown");
+    dropdown.innerHTML = "<option value='all'>Alle</option>";
+    const jsonPromise = getJson(URL + "Targetgroups");
+    jsonPromise.then(data => {
+        data.forEach((item, index) => {
+            dropdown.innerHTML += `<option value='${item}'>${item}</option>`;
+        });
+    });
+
+}
+
 
 
 const Appointments = [
