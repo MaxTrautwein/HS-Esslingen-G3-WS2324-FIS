@@ -1,0 +1,12 @@
+img.logo{
+    width: 24vh;
+    height: 10vh;
+    margin: 1em 5vw 1em 1em;
+}
+
+header{
+    border-bottom: 5px solid red;
+    margin-bottom: 2em;
+    position: sticky;
+    top: 0;
+}
