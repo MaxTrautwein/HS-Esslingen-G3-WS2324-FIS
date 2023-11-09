@@ -64,10 +64,14 @@ class Appointment:
             self.canceled = Database.IsAppointmentCanceld(date,self.id)
             self.groups = Database.GetIntrestedGroups(self.id)
 
+
             self.lecturer = abstractApp.lecturer
             self.room = abstractApp.room
+            self.roomName = Database.GetRoomName(self.room)
+
             self.date = date
     
     def toJson(self):
         return {"id":self.id,"name":self.name,"description":self.description,"start":self.startTime.strftime("%H:%M"),
-                "end":self.endTime.strftime("%H:%M"),"lecturer":self.lecturer,"date":self.date.strftime("%d.%m.%Y"),"canceld":self.canceled,"groups":self.groups}
+                "end":self.endTime.strftime("%H:%M"),"lecturer":self.lecturer,"date":self.date.strftime("%d.%m.%Y"),
+                "canceld":self.canceled,"groups":self.groups,"room":self.roomName}

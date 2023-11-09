@@ -97,4 +97,6 @@ class Database:
             self.cur.execute(f"delete from datecanceled where date = '{date}' and appointment = {id};")
         self.con.commit()            
 
-    
+    def GetRoomName(self,id):
+        self.cur.execute(f"select name from room where id = {id};")
+        return self.cur.fetchone()
