@@ -2,6 +2,7 @@ import psycopg2
 import time
 import logging
 import Appointment
+import datecondition
 
 
 logger = logging.getLogger('FIS')
@@ -23,6 +24,18 @@ class Database:
     def DeInit(self):
         self.con.close()
 
+    # Sehr ineffizent, aber vermustlich soper aufwändig das besser zu machen
+    def GetAllAppointmetsToday(self):
+        self.cur.execute(f"select * from appointments;")
+        data = self.cur.fetchall()
+        Apps = []
+        cond = datecondition.datecondition(0)
+        for App in data:
+            Abstract =  Appointment.Appointment_Abstract(*App)
+            Appointments = Abstract.resolveToAppointment_Where(self,cond.Today)
+            for ap in Appointments:
+                Apps.append(ap)
+        return Apps
 
     def GetAllAppointmetsFor(self,Lectuerer):
         self.cur.execute(f"select * from appointments where appointments.lecturer = {Lectuerer};")

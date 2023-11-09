@@ -17,6 +17,22 @@ class Appointment_Abstract:
             self.lecturer = lecturer
             self.room = room
             self.dateSpan = dateSpan
+    def resolveToAppointment_Where(self,database,DateCondition):
+         print("TODO")
+         today = date.today()
+         database.cur.execute(f"select datestart as anfang, dateend as ende, repeat from  datespan where datespan.id = {self.dateSpan}")
+         start, end, repeate = database.cur.fetchone()
+         if (repeate == 0 and DateCondition(start,today)):
+              return [Appointment(self,start)]
+         #In this case We need to get all futer Events
+         Appointments = []
+         
+         event = start
+         while (event < end):
+              event += timedelta(days=repeate)
+              if (DateCondition(event,today)):
+                   Appointments.append(Appointment(self,event,database))
+         return Appointments
     def resolveToAppointment(self,database):
          print("TODO")
          database.cur.execute(f"select datestart as anfang, dateend as ende, repeat from  datespan where datespan.id = {self.dateSpan}")

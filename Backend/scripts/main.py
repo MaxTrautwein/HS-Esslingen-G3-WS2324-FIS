@@ -71,3 +71,24 @@ def UpdateCanceled():
     content = request.json
     Database.UpdateCanceled(content["canceled"],content["id"],datetime.strptime(content["date"], "%d.%m.%Y"))
     return {}
+
+
+
+@app.get("/AppointmentsToday")
+def GetAppointmentsToday():
+    data = []
+    Apps =  Database.GetAllAppointmetsToday()
+    
+    for ap in Apps:
+        data.append(ap.toJson())
+    return data
+
+
+@app.get("/Targetgroups")
+def GetTargetgroups():
+    return "TODO"
+
+@app.get("/CanceledApp")
+def GetCanceledApps():
+    id = request.args.get('dur')
+    return "TODO"
