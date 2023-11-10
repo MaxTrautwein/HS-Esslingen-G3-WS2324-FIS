@@ -81,19 +81,20 @@ def GetAppointmentsToday():
         data.append(ap.toJson())
     return data
 
-
 @app.get("/Targetgroups")
 def GetTargetgroups():
     return Database.GetAllGroups()
 
 @app.get("/CanceledApp")
 def GetCanceledApps():
-    id = int(request.args.get('dur'))
-    
+    duration = request.args.get('dur')
+    if (duration is None):
+        logger.info(request)
+        abort(400)
+
     data = []
-    Apps =  Database.GetAllCanceldAppointmetsForNDays(id)
+    Apps =  Database.GetAllCanceldAppointmetsForNDays(int(duration))
     
     for ap in Apps:
         data.append(ap.toJson())
     return data
-
