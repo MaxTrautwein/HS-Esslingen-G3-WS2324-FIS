@@ -103,8 +103,14 @@ def GetCanceledApps():
 def GetRooms():
     return Database.GetAllRooms()
 
+@app.route('/UpdateAppointment', methods=['POST'])
 def UpdateAppointment():
+    content = request.json
     return "TODO"
+
+@app.get("/GetLecturers")
+def GetLecturers():
+    return Database.GetAllLecturers()
 
 @app.get("/AdminGetAppointment")
 def GetAdminAppointmentData():
@@ -113,7 +119,6 @@ def GetAdminAppointmentData():
         logger.info(request)
         abort(400)
     App = Database.GetAppointmentByID(id).toJson()
-    App["lecturerName"] = Database.GetUserByID(App["lecturer"]) 
     App["dateSpanData"] = Database.GetDateSpanByID(App["dateSpan"]) 
 
     return App

@@ -120,6 +120,14 @@ class Database:
         Vname, name = self.cur.fetchone()
         return {"firstName":Vname,"lastName":name} 
     
+    def GetAllLecturers(self):
+        self.cur.execute("select vorname,name from users where isadmin = false")
+        data = self.cur.fetchall()
+        res = []
+        for group in data:
+            res.append({"firstName":group[0],"lastName":group[1]} )
+        return res
+    
     def GetDateSpanByID(self,id):
         self.cur.execute(f"select datestart,dateend,repeat from datespan where id = {id};")
         datestart,dateend,repeat = self.cur.fetchone()
