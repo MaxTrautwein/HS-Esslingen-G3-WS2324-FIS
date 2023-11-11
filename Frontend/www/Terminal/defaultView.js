@@ -252,8 +252,8 @@ function generateTimeSlot(number, filter) {
                 timeSlot.appendChild(appointment)
             }
         });
-        return timeSlot;
     });
+    return timeSlot;
 }
 
 
@@ -268,8 +268,6 @@ function generateDropdown(){
     });
 
 }
-
-
 
 const Appointments = [
     {
