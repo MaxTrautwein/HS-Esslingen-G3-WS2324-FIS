@@ -123,7 +123,7 @@ class Database:
     def GetDateSpanByID(self,id):
         self.cur.execute(f"select datestart,dateend,repeat from datespan where id = {id};")
         datestart,dateend,repeat = self.cur.fetchone()
-        return {"startDate":datestart, "endDate":dateend,"repeat":repeat} 
+        return {"startDate":datestart.strftime("%d.%m.%Y"), "endDate":dateend.strftime("%d.%m.%Y"),"repeat":repeat} 
     
     def DeleteDateCanceledByID(self,id):
         self.cur.execute(f"delete from datecanceled where appointment = {id}")
