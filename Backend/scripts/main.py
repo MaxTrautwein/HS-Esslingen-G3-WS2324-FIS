@@ -106,6 +106,12 @@ def GetRooms():
 @app.route('/UpdateAppointment', methods=['POST'])
 def UpdateAppointment():
     content = request.json
+
+    return "TODO"
+
+@app.route('/CreateAppointment', methods=['POST'])
+def CreateAppointment():
+    content = request.json
     return "TODO"
 
 @app.get("/GetLecturers")
@@ -118,10 +124,11 @@ def GetAdminAppointmentData():
     if (id is None):
         logger.info(request)
         abort(400)
-    App = Database.GetAppointmentByID(id).toJson()
-    App["dateSpanData"] = Database.GetDateSpanByID(App["dateSpan"]) 
-
-    return App
+    App = Database.GetAppointmentByID(id)
+    App.resolveTargetGroups(Database)
+    AppJson = App.toJson()
+    AppJson["dateSpanData"] = Database.GetDateSpanByID(AppJson["dateSpan"]) 
+    return AppJson
 
 @app.get("/DeleteAppointment")
 def DeleteAppointment():
