@@ -1,5 +1,6 @@
 import psycopg2
 import time
+from datetime import datetime
 import logging
 import Appointment
 import datecondition
@@ -158,4 +159,21 @@ class Database:
         #Commit
         self.con.commit()
 
+    def CreateAppointment(self,data):
+        InserApp_prefix = "insert into appointments (name, description, starttime, endtime, lecturer, room, datespan) VALUES "
+        InsertDate_prefix = "insert into datespan (datestart, dateend, repeat) VALUES "
+        startDate = datetime.strptime(data['dateSpanData']['startDate'], "%d.%m.%Y")
+        endDate = datetime.strptime(data['dateSpanData']['endDate'], "%d.%m.%Y")
 
+        self.cur.execute(InsertDate_prefix + f"('{startDate}','{endDate}',{data['dateSpanData']['repeat'] }) returning id;")
+        datespan = self.cur.fetchone()[0]
+
+        self.cur.execute(InserApp_prefix + f"('{data['name']}','{data['description']}', '{data['start']}','{data['end']}',{data['lecturer']},{data['room']},{datespan}) returning id;")
+        AppID = self.cur.fetchone()[0]
+
+        for group in data['groups']:
+            self.cur.execute(f"insert into targetgroups (targetgroup, appointment) VALUES ({group} ,{AppID});")
+        
+        #Commit
+        self.con.commit()
+        return AppID

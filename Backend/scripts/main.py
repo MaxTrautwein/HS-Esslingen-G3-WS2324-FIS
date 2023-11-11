@@ -112,7 +112,8 @@ def UpdateAppointment():
 @app.route('/CreateAppointment', methods=['POST'])
 def CreateAppointment():
     content = request.json
-    return "TODO"
+    AppID = Database.CreateAppointment(content)
+    return {"Created":AppID} 
 
 @app.get("/GetLecturers")
 def GetLecturers():
