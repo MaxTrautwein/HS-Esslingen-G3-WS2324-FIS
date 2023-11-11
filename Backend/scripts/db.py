@@ -100,3 +100,54 @@ class Database:
     def GetRoomName(self,id):
         self.cur.execute(f"select name from room where id = {id};")
         return self.cur.fetchone()
+    
+    def GetAllRooms(self):
+        self.cur.execute("select name from room;")
+
+        data = self.cur.fetchall()
+        res = []
+        for group in data:
+            res.append(group[0])
+        return res
+    
+    def GetAppointmentByID(self,id):
+        self.cur.execute(f"select * from appointments where id = {id};")
+        return Appointment.Appointment_Abstract(*self.cur.fetchone())
+    
+    def GetUserByID(self,id):
+        #select vorname,name from users where id =1
+        self.cur.execute(f"select vorname,name from users where id = {id};")
+        Vname, name = self.cur.fetchone()
+        return {"firstName":Vname,"lastName":name} 
+    
+    def GetDateSpanByID(self,id):
+        self.cur.execute(f"select datestart,dateend,repeat from datespan where id = {id};")
+        datestart,dateend,repeat = self.cur.fetchone()
+        return {"startDate":datestart, "endDate":dateend,"repeat":repeat} 
+    
+    def DeleteDateCanceledByID(self,id):
+        self.cur.execute(f"delete from datecanceled where appointment = {id}")
+    
+    def DeleteTargetGroupsByID(self,id):
+        self.cur.execute(f"delete from targetgroups where appointment = {id}")
+
+    def DeleteAppointmentByID(self,id):
+        self.cur.execute(f"delete from appointments where id = {id}")
+
+    def GetAppointmentDateSpanByID(self,id):
+        self.cur.execute(f"select datespan from appointments where id = {id}")
+        return self.cur.fetchone()[0]
+    
+    def TryDeleteDateSpanByID(self,id):
+        self.cur.execute(f"delete from datespan  where id = {id}  and not exists(select datespan from  appointments where appointments.datespan = {id})")
+
+    def DeleateFullAppointment(self,id):
+        self.DeleteDateCanceledByID(id)
+        self.DeleteTargetGroupsByID(id)
+        datespan = self.GetAppointmentDateSpanByID(id)
+        self.DeleteAppointmentByID(id)
+        self.TryDeleteDateSpanByID(datespan)
+        #Commit
+        self.con.commit()
+
+

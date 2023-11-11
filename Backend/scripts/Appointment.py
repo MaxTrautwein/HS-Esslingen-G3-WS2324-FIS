@@ -47,6 +47,16 @@ class Appointment_Abstract:
               if (event >= today):
                    Appointments.append(Appointment(self,event,database))
          return Appointments
+    def toJson(self):
+         return {"id":self.id,
+                 "name":self.name,
+                 "description":self.description,
+                 "start":self.startTime.strftime("%H:%M"),
+                 "end":self.endTime.strftime("%H:%M"),
+                 "lecturer":self.lecturer,
+                 "room":self.room,
+                 "dateSpan":self.dateSpan
+                 }
          
 
 

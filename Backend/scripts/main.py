@@ -98,3 +98,32 @@ def GetCanceledApps():
     for ap in Apps:
         data.append(ap.toJson())
     return data
+
+@app.get("/GetRooms")
+def GetRooms():
+    return Database.GetAllRooms()
+
+def UpdateAppointment():
+    return "TODO"
+
+@app.get("/AdminGetAppointment")
+def GetAdminAppointmentData():
+    id = request.args.get('id')
+    if (id is None):
+        logger.info(request)
+        abort(400)
+    App = Database.GetAppointmentByID(id).toJson()
+    App["lecturerName"] = Database.GetUserByID(App["lecturer"]) 
+    App["dateSpanData"] = Database.GetDateSpanByID(App["dateSpan"]) 
+
+    return App
+
+@app.get("/DeleteAppointment")
+def DeleteAppointment():
+    id = request.args.get('id')
+    if (id is None):
+        logger.info(request)
+        abort(400)
+    Database.DeleateFullAppointment(id)
+    return {} 
+
