@@ -106,8 +106,10 @@ def GetRooms():
 @app.route('/UpdateAppointment', methods=['POST'])
 def UpdateAppointment():
     content = request.json
-
-    return "TODO"
+    # I'm a bit lazy here, if this was a bigger project i should implement a proper Update
+    Database.DeleateFullAppointment(content['id'])
+    AppID = Database.CreateAppointment(content)
+    return {"Updated":AppID}
 
 @app.route('/CreateAppointment', methods=['POST'])
 def CreateAppointment():
