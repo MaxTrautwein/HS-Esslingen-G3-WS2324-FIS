@@ -8,6 +8,13 @@ insert into appointments (name, description, starttime, endtime, lecturer, room,
     ('Softwaretechnik','Waterfall', '14:00','15:00',2,2,2),
     ('Softwaretechnik','scrum', '17:15','19:00',2,2,2);
 
+insert into targetgroups (targetgroup, appointment) VALUES (3,1),
+                                                           (4,1),
+                                                           (1,2),
+                                                           (1,3),
+                                                           (1,4),
+                                                           (1,5);
+
 
 insert into DateCanceled (date, appointment)
 values ('2023-09-25',1),

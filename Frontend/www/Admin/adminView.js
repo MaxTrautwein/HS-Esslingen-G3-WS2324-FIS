@@ -88,6 +88,7 @@ function generateAdd(item = example) {
 
     const textID = elementWithClasses ("div", "textID");
     textID.innerText = item.id;
+    textID.id = "textID";
 
     addContainer.appendChild(textC);
     addContainer.appendChild(textID);
@@ -284,10 +285,6 @@ function generateAdd(item = example) {
     wiederholungInputDiv.className = 'col-75';
     var wiederholungInput = document.createElement('select');
     wiederholungInput.id = 'myDropdownW';
-    var wiederholungOptionNone = document.createElement('option');
-    wiederholungOptionNone.value = 'none';
-    wiederholungOptionNone.textContent = '';
-    wiederholungInput.appendChild(wiederholungOptionNone);
     var wiederholungOptionWeekly = document.createElement('option');
     wiederholungOptionWeekly.value = '7';
     wiederholungOptionWeekly.textContent = 'wöchentlich';
@@ -363,7 +360,14 @@ function generateAdd(item = example) {
         deleteIcon.addEventListener("click", () => {
             deleteAppointment(item.id);
         })
+        newMain.addEventListener("click", () => {
+            lehrkraftInput.selectedIndex = item.lecturer;
+            raumsucheInput.selectedIndex = item.room;
+            zielgruppeInput.selectedIndex = item.groups[0];
+            wiederholungInput.selectedIndex = item.dateSpanData.repeat;
+        });
     }
+
 
 
     addContainer.appendChild(date);
@@ -378,7 +382,7 @@ function generateAdd(item = example) {
 
 
 function deleteAppointment(id){
-    PostJson(0, URL + `DeleteAppointment?id=${id}`);
+    getJson(URL + `DeleteAppointment?id=${id}`);
     console.log("deleted: ", id);
 }
 
@@ -400,13 +404,13 @@ function uploadAdd(){
     const name = appName.value;    
 
     const myDropdownL = document.getElementById("myDropdownL");
-    const lecturer = myDropdownL.value;
+    const lecturer = Number(myDropdownL.value);
 
     const myDropdownR = document.getElementById("myDropdownR");
-    const room = myDropdownR.value;
+    const room = Number(myDropdownR.value);
 
     const myDropdownZ = document.getElementById("myDropdownZ");
-    const groups = [myDropdownZ.value];
+    const groups = [Number(myDropdownZ.value)];
 
     const anfang = document.getElementById("anfang");
     const start = anfang.value;
@@ -421,13 +425,12 @@ function uploadAdd(){
     const endDate = letzterTermin.value;
 
     const myDropdownW = document.getElementById("myDropdownW");
-    const repeat = myDropdownW.value;
+    const repeat = Number(myDropdownW.value);
 
     const beschreibung = document.getElementById("beschreibung");
     const description = beschreibung.value;
     
-    var idContainer = document.getElementsByClassName("textID");
-    var id = idContainer.innerText;
+    var id = Number($("#textID").text())
 
     var dateSpanData = {
         "endDate": endDate,
@@ -437,15 +440,14 @@ function uploadAdd(){
 
     var jsonData =  {dateSpanData, description, end, groups, id, lecturer, name, room, start}
 
-    var data = JSON.stringify(jsonData);
 
     if(id == 0){
         console.log("erschaffe", jsonData);
-        PostJson(data, URL + "CreateAppointment");
+        PostJson(jsonData, URL + "CreateAppointment");
     }
     else {
         console.log("veraendere", jsonData);
-        PostJson(data, URL + "UpdateAppointment");
+        PostJson(jsonData, URL + "UpdateAppointment");
     }
 
 }
@@ -587,7 +589,7 @@ function generateTimeSlot(filter) {
             const jsonPromise2 = getJson(URL + `AdminGetAppointment?id=${ID}`);
             jsonPromise2.then(item => {
 
-                if (item.groups.includes(filter) || filter == "0") {
+                if (item.groups.includes(Number(filter)) || filter == "0") {
 
                     const appointment = elementWithClasses("div", "appointment");
 
