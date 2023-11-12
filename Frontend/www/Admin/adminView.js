@@ -2,10 +2,10 @@ const URL = "http://localhost:5000/"
 window.addEventListener('load', () => defaultView.init());
 
 const defaultView = {
-    async init() {
+    init() {
         const body = document.body;
 
-        const main = await generateDefault("none");
+        const main = generateDefault("none");
         body.appendChild(main);
     },   
 };
@@ -18,21 +18,21 @@ function elementWithClasses(elementType, classNames) {
     return element;
 }
 
-async function filter() {
+function filter() {
     var dropdown = document.getElementById('myDropdown');
     var selectedValue = dropdown.value;
     
-    await generateDefault(selectedValue);
+    generateDefault(selectedValue);
 }
 
-async function generateDefault(filter) {
+function generateDefault(filter) {
     const oldMain = document.querySelector("main"); 
     const newMain = document.createElement("main");
 
     const dropdown = document.getElementById('myDropdown');
     filter = dropdown.value;
     
-    const timeSlot = await generateTimeSlot(filter);
+    const timeSlot = generateTimeSlot(filter);
     newMain.appendChild(timeSlot);
 
     if (oldMain !== null) {
@@ -342,19 +342,16 @@ function generateAdd(item = example) {
     //document.body.appendChild(script);
    
     const saveIcon = elementWithClasses("div", "saveIcon");
-    saveIcon.innerHTML = "<button id='save' class='saveButton' onclick='this.style.display='none''><i class='material-icons saveIcon'>cloud_upload</i></button>";
+    saveIcon.innerHTML = "<button id='save' class='saveButton'><i class='material-icons saveIcon'>cloud_upload</i></button>";
     date.appendChild(saveIcon);
 
     const backIcon = elementWithClasses("div", "backIcon");
-    backIcon.innerHTML = "<button id='back' class='backButton' onclick='this.style.display='none''><i class='material-icons backIcon'>arrow_back</i></button>";
+    backIcon.innerHTML = "<button id='back' class='backButton'><i class='material-icons backIcon'>arrow_back</i></button>";
     date.appendChild(backIcon);
 
 
-    backIcon.addEventListener("click", async () => {
-        const form = document.getElementById('addForm');
-        form.style.display = 'none';
-        await generateDefault();
-
+    backIcon.addEventListener("click", () => {
+        generateDefault();
     });
 
     saveIcon.addEventListener("click", () => {
@@ -388,6 +385,7 @@ function deleteAppointment(id){
 function generateDropdown(){
     const dropdown = document.getElementById("myDropdown");
     dropdown.innerHTML = "<option value='0'>Alle</option>";
+    sleep(50);
     const jsonPromise = getJson(URL + "Targetgroups");
     jsonPromise.then(data => {
         data.forEach((item, index) => {
@@ -443,13 +441,11 @@ function uploadAdd(){
 
     if(id == 0){
         console.log("erschaffe", jsonData);
-        var newAppointmentId = PostJson(data, URL + "CreateAppointment");
-        console.log(newAppointmentId);
+        PostJson(data, URL + "CreateAppointment");
     }
     else {
         console.log("veraendere", jsonData);
-        var newAppointmentId = PostJson(data, URL + "UpdateAppointment");
-        console.log(newAppointmentId);
+        PostJson(data, URL + "UpdateAppointment");
     }
 
 }
@@ -464,8 +460,6 @@ function PostJson(jsonData,url){
             'Content-Type': 'application/json'
         },
         body: data
-    }).then(response => {
-        return response;
     });
 }
 
@@ -486,43 +480,6 @@ function getJson(url) {
     .catch(error => {
         console.error('Error fetching data:', error);
     });
-}
-
-function generateCancelled() {
-    const oldMain = document.querySelector("main"); 
-    const newMain = document.createElement("main");
-
-    const cancelledContainer = elementWithClasses("div", "cancelledContainer")
-    const date = document.createElement("h1");
-    const currentDate = new Date();
-    date.innerText = `${currentDate.getDate()}.${currentDate.getMonth()+1}.${currentDate.getFullYear()} ausfallende Termine:`;
-    cancelledContainer.appendChild(date);
-
-    Appointments.forEach((item, index) => {
-        if(item.canceld){
-            const appointment = elementWithClasses("div", "cancelledAppointment");
-            cancelledContainer.appendChild(appointment)
-
-            const nameContainer = elementWithClasses("div", "name");
-            const name = document.createElement("h2");
-            name.innerText = item.name;
-            nameContainer.appendChild(name);
-            appointment.appendChild(nameContainer);
-
-
-            appointment.addEventListener("click", () => {
-                generateDetails(item);
-            });
-        }
-            
-    });
-    
-
-    newMain.appendChild(cancelledContainer);
-
-    if (oldMain !== null) {
-        oldMain.replaceWith(newMain);
-    }
 }
 
 
@@ -569,6 +526,7 @@ function generateDetails(item) {
 function generateDropdownL(dropdown, indexid){
     //const dropdown = document.getElementById("myDropdownL");
     dropdown.innerHTML = "<option value='0'> Niemand </option>";
+    sleep(50);
     const jsonPromise = getJson(URL + "GetLecturers");
     jsonPromise.then(data => {
         data.forEach((item, index) => {
@@ -578,12 +536,15 @@ function generateDropdownL(dropdown, indexid){
             dropdown.add(option);
         });
     });
-    dropdown.selectedIndex = 3;
+    window.addEventListener('load', function() {
+        dropdown.selectedIndex = 3;
+    });
 }
 
 function generateDropdownZ(dropdown){
     //const dropdown = document.getElementById("myDropdownZ");
     dropdown.innerHTML = "<option value='0'> Keine </option>";
+    sleep(50);
     const jsonPromise = getJson(URL + "Targetgroups");
     jsonPromise.then(data => {
         data.forEach((item, index) => {
@@ -596,6 +557,7 @@ function generateDropdownZ(dropdown){
 function generateDropdownR(dropdown){
     //const dropdown = document.getElementById("myDropdownR");
     dropdown.innerHTML = "<option value='0'> Keiner </option>";
+    sleep(50);
     const jsonPromise = getJson(URL + "GetRooms");
     jsonPromise.then(data => {
         data.forEach((item, index) => {
@@ -605,11 +567,13 @@ function generateDropdownR(dropdown){
 
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
 
-async function generateTimeSlot(filter) {
+function sleep(ms) {
+    var start = new Date().getTime();
+    while (new Date().getTime() < start + ms);
+  }
+
+function generateTimeSlot(filter) {
     const timeSlot = elementWithClasses("div", "timeSlot");
 
     const timeContainer = elementWithClasses("div", "timeContainer");
@@ -618,7 +582,8 @@ async function generateTimeSlot(filter) {
 
     const jsonPromise = getJson(URL + "GetAdminAppointmentIDs");
     jsonPromise.then(appointmentIDs => {
-        appointmentIDs.forEach(async (ID, index) => {
+        appointmentIDs.forEach((ID, index) => {
+            sleep(50);
             const jsonPromise2 = getJson(URL + `AdminGetAppointment?id=${ID}`);
             jsonPromise2.then(item => {
 
@@ -665,77 +630,5 @@ async function generateTimeSlot(filter) {
     return timeSlot;
 }
 
-
-
-const Appointments = [
-    {
-        id: 1,
-        name:"SWB1",
-        dateStart:"19. Oct 2023",
-        dateEnd:"25. Jan 2024",
-        start:"8:00",
-        end:"12:15",
-        details:"Some Sample text, idk",
-        room:"F1.401",
-        lecturer:"Willbur Soot",
-        canceld:false
-    },{
-        id: 2,
-        name:"SWB4",
-        dateStart:"19. Oct 2023",
-        dateEnd:"25. Jan 2024",
-        start:"9:45",
-        end:"12:15",
-        details:"Some Other Sample text, idk",
-        room:"F1.201",
-        lecturer:"Bach",
-        canceld:true
-    },{
-        id: 3,
-        name:"SWB5",
-        dateStart:"19. Oct 2023",
-        dateEnd:"25. Jan 2024",
-        start:"14:00",
-        end:"12:15",
-        details:"Some Sample text, idk",
-        room:"F1.431",
-        lecturer:"Barbara",
-        canceld:false
-    },{
-        id: 4,
-        name:"SWB2",
-        dateStart:"19. Oct 2023",
-        dateEnd:"25. Jan 2024",
-        start:"17:15",
-        end:"12:15",
-        details:"FREEDOM! TATEKAE!!",
-        room:"F1.139",
-        lecturer:"Eren Yeager",
-        canceld:false
-    },{
-        id: 5,
-        name:"SWB2",
-        dateStart:"19. Oct 2023",
-        dateEnd:"25. Jan 2024",
-        start:"17:15",
-        end:"12:15",
-        details:"TECHNOBLADE NEVER DIES",
-        room:"F1.151",
-        lecturer:"Technoblade o7",
-        canceld:true
-    },{
-        id: 6,
-        name:"SWB3",
-        dateStart:"19. Oct 2023",
-        dateEnd:"25. Jan 2024",
-        start:"14:00",
-        end:"00:00",
-        details:"Dominik, streichelt den Hund",
-        room:"F10.965",
-        lecturer:"Tamara",
-        canceld:false
-    }
-
-];
 
 const timeSlots = ["8:00", "9:45", "11:30", "14:00", "15:45", "17:15"]
