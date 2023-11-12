@@ -177,3 +177,11 @@ class Database:
         #Commit
         self.con.commit()
         return AppID
+    
+    def GetAllAppointmentsForAdminDefault(self):
+        self.cur.execute("select id from appointments;")
+        data = self.cur.fetchall()
+        ids = [] 
+        for id in data:
+            ids.append(id[0])
+        return ids
