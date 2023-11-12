@@ -17,11 +17,13 @@ class Appointment_Abstract:
             self.lecturer = lecturer
             self.room = room
             self.dateSpan = dateSpan
-
+    def resolveTargetGroups(self,database):
+         self.groups = database.GetIntrestedGroups(self.id)
     
     def resolveToAppointment_Where(self,database,DateCondition):
          today = date.today()
          start, end, repeate = database.FetchRepeateInfo(self.dateSpan)
+         self.resolveTargetGroups(database)
          if (repeate == 0 and DateCondition(start,today)):
               return [Appointment(self,start)]
          #In this case We need to get all futer Events
@@ -36,6 +38,7 @@ class Appointment_Abstract:
 
     def resolveToAppointment(self,database):
          start, end, repeate = database.FetchRepeateInfo(self.dateSpan)
+         self.resolveTargetGroups(database)
          if (repeate == 0):
               return [Appointment(self,start)]
          #In this case We need to get all futer Events
@@ -47,6 +50,17 @@ class Appointment_Abstract:
               if (event >= today):
                    Appointments.append(Appointment(self,event,database))
          return Appointments
+    def toJson(self):
+         return {"id":self.id,
+                 "name":self.name,
+                 "description":self.description,
+                 "start":self.startTime.strftime("%H:%M"),
+                 "end":self.endTime.strftime("%H:%M"),
+                 "lecturer":self.lecturer,
+                 "room":self.room,
+                 "dateSpan":self.dateSpan,
+                 "groups":self.groups
+                 }
          
 
 
@@ -62,7 +76,7 @@ class Appointment:
             self.endTime = abstractApp.endTime
 
             self.canceled = Database.IsAppointmentCanceld(date,self.id)
-            self.groups = Database.GetIntrestedGroups(self.id)
+            self.groups = abstractApp.groups
 
 
             self.lecturer = abstractApp.lecturer
