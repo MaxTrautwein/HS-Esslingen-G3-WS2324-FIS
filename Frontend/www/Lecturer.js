@@ -1,12 +1,20 @@
 
-const userID = 1;
+var userID = 1;
 const URL = "http://localhost:5000/"
 window.addEventListener("load",() => init());
 
 function  init(){
-
+    $("#UserID").text(userID);
+    $("#UserIDInput").val(userID)
     httpGetAsync(URL + "Appointments?id=" + userID,BuildCards)
 }
+
+function UpdateUserID(){
+    userID = Number( $("#UserIDInput").val())
+    $("#CardContainer").empty();
+    init()
+}
+
 
 function httpGetAsync(theUrl, callback) {
     let xmlHttp = new XMLHttpRequest();

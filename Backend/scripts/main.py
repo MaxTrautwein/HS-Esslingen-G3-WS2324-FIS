@@ -81,19 +81,64 @@ def GetAppointmentsToday():
         data.append(ap.toJson())
     return data
 
-
 @app.get("/Targetgroups")
 def GetTargetgroups():
     return Database.GetAllGroups()
 
 @app.get("/CanceledApp")
 def GetCanceledApps():
-    id = int(request.args.get('dur'))
-    
+    duration = request.args.get('dur')
+    if (duration is None):
+        logger.info(request)
+        abort(400)
+
     data = []
-    Apps =  Database.GetAllCanceldAppointmetsForNDays(id)
+    Apps =  Database.GetAllCanceldAppointmetsForNDays(int(duration))
     
     for ap in Apps:
         data.append(ap.toJson())
     return data
+
+@app.get("/GetRooms")
+def GetRooms():
+    return Database.GetAllRooms()
+
+@app.route('/UpdateAppointment', methods=['POST'])
+def UpdateAppointment():
+    content = request.json
+    # I'm a bit lazy here, if this was a bigger project i should implement a proper Update
+    Database.DeleateFullAppointment(content['id'])
+    AppID = Database.CreateAppointment(content)
+    return {"Updated":AppID}
+
+@app.route('/CreateAppointment', methods=['POST'])
+def CreateAppointment():
+    content = request.json
+    AppID = Database.CreateAppointment(content)
+    return {"Created":AppID} 
+
+@app.get("/GetLecturers")
+def GetLecturers():
+    return Database.GetAllLecturers()
+
+@app.get("/AdminGetAppointment")
+def GetAdminAppointmentData():
+    id = request.args.get('id')
+    if (id is None):
+        logger.info(request)
+        abort(400)
+    App = Database.GetAppointmentByID(id)
+    App.resolveTargetGroups(Database)
+    AppJson = App.toJson()
+    AppJson["dateSpanData"] = Database.GetDateSpanByID(AppJson["dateSpan"]) 
+    return AppJson
+
+@app.get("/DeleteAppointment")
+def DeleteAppointment():
+    id = request.args.get('id')
+    if (id is None):
+        logger.info(request)
+        abort(400)
+    Database.DeleateFullAppointment(id)
+    return {} 
 
