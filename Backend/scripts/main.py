@@ -142,3 +142,6 @@ def DeleteAppointment():
     Database.DeleateFullAppointment(id)
     return {} 
 
+@app.get("/GetAdminAppointmentIDs")
+def GetAdminAppointmentIDs():
+    return Database.GetAllAppointmentsForAdminDefault()
