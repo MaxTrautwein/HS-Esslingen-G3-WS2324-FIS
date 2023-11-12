@@ -342,6 +342,10 @@ function generateAdd(item = example) {
     saveIcon.innerHTML = "<button id='save' class='saveButton'><i class='material-icons saveIcon'>cloud_upload</i></button>";
     date.appendChild(saveIcon);
 
+    const reset = elementWithClasses ("button", "reset");
+    reset.innerText = "Reset";
+    date.appendChild(reset);
+
     const backIcon = elementWithClasses("div", "backIcon");
     backIcon.innerHTML = "<button id='back' class='backButton'><i class='material-icons backIcon'>arrow_back</i></button>";
     date.appendChild(backIcon);
@@ -360,11 +364,13 @@ function generateAdd(item = example) {
         deleteIcon.addEventListener("click", () => {
             deleteAppointment(item.id);
         })
-        newMain.addEventListener("click", () => {
+        reset.addEventListener("click", () => {
+
             lehrkraftInput.selectedIndex = item.lecturer;
             raumsucheInput.selectedIndex = item.room;
             zielgruppeInput.selectedIndex = item.groups[0];
             wiederholungInput.selectedIndex = item.dateSpanData.repeat;
+
         });
     }
 
