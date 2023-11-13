@@ -31,6 +31,10 @@ def test_request_example(client):
     response = client.get("/TEST")
 
     assert response.status_code == 200
-    assert b'TEST' in response.data
+    assert 'TEST' == response.data
     #
 
+# Sanity Check Testing should work
+def test_TestingTests():
+    data = main.TestingTests()
+    assert 'TEST' == data
