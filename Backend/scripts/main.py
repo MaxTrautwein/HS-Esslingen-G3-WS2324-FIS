@@ -2,6 +2,8 @@ import logging
 from flask import Flask, request, jsonify, render_template, abort, redirect
 from flask_cors import CORS
 from datetime import datetime
+import pytest
+
 
 
 logger = logging.getLogger('FIS')
@@ -14,6 +16,10 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 
 ch.setFormatter(formatter)
 logger.addHandler(ch)
+
+def create_app():
+    app = Flask(__name__)
+    return app
 
 app = Flask(__name__)
 CORS(app)
@@ -30,6 +36,7 @@ def GetLogin():
         return redirect()#hier nach merch die auf webserver redirecten
         
     else:
+        
         return render_template('login.html')
 
 
