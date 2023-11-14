@@ -176,7 +176,3 @@ def DeleteAppointment():
 @app.get("/GetAdminAppointmentIDs")
 def GetAdminAppointmentIDs():
     return g.Database.GetAllAppointmentsForAdminDefault()
-
-@app.get("/TEST")
-def TestingTests():
-    return "TEST"
