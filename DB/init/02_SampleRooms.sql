@@ -7,6 +7,6 @@ insert into floor (floorname, floorplan, floorprefix) VALUES
     ('2','/Some/Path/Plan.png','F1.2');
 
 insert into room (number, name, path, pathaccess, floor) VALUES
-    ('08','Fachschaft IT','/Some/Path/path.png','/Some/Path/path.png',2),
-    ('07','F1.207','/Some/Path/path.png','/Some/Path/path.png',6),
-    ('10','F1.-110','/Some/Path/path.png','/Some/Path/path.png',3)
+    ('08','F1.405','/Some/Path/path.png','/Some/Path/path.png',2),
+    ('07','F1.408','/Some/Path/path.png','/Some/Path/path.png',6),
+    ('10','F1.411','/Some/Path/path.png','/Some/Path/path.png',3)
