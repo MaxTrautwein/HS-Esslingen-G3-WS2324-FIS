@@ -400,7 +400,7 @@ function deleteAppointment(id){
 function generateDropdown(){
     const dropdown = document.getElementById("myDropdown");
     dropdown.innerHTML = "<option value='0'>Alle</option>";
-    sleep(50);
+
     const jsonPromise = getJson(URL + "Targetgroups");
     jsonPromise.then(data => {
         data.forEach((item, index) => {
@@ -546,7 +546,6 @@ function generateDetails(item) {
 function generateDropdownL(dropdown, indexid){
     //const dropdown = document.getElementById("myDropdownL");
     dropdown.innerHTML = "<option value='0'> Niemand </option>";
-    sleep(50);
     const jsonPromise = getJson(URL + "GetLecturers");
     jsonPromise.then(data => {
         data.forEach((item, index) => {
@@ -564,7 +563,6 @@ function generateDropdownL(dropdown, indexid){
 function generateDropdownZ(dropdown){
     //const dropdown = document.getElementById("myDropdownZ");
     dropdown.innerHTML = "<option value='0'> Keine </option>";
-    sleep(50);
     const jsonPromise = getJson(URL + "Targetgroups");
     jsonPromise.then(data => {
         data.forEach((item, index) => {
@@ -577,7 +575,6 @@ function generateDropdownZ(dropdown){
 function generateDropdownR(dropdown){
     //const dropdown = document.getElementById("myDropdownR");
     dropdown.innerHTML = "<option value='0'> Keiner </option>";
-    sleep(50);
     const jsonPromise = getJson(URL + "GetRooms");
     jsonPromise.then(data => {
         data.forEach((item, index) => {
@@ -587,11 +584,6 @@ function generateDropdownR(dropdown){
 
 }
 
-
-function sleep(ms) {
-    var start = new Date().getTime();
-    while (new Date().getTime() < start + ms);
-  }
 
 
   function showMessagePopup(message, durationInSeconds) {
@@ -628,7 +620,6 @@ function generateTimeSlot(filter) {
     const jsonPromise = getJson(URL + "GetAdminAppointmentIDs");
     jsonPromise.then(appointmentIDs => {
         appointmentIDs.forEach((ID, index) => {
-            sleep(50);
             const jsonPromise2 = getJson(URL + `AdminGetAppointment?id=${ID}`);
             jsonPromise2.then(item => {
 

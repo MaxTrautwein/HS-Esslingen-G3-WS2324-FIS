@@ -216,10 +216,6 @@ function generateDetails(item) {
     }
 }
 
-function sleep(ms) {
-    var start = new Date().getTime();
-    while (new Date().getTime() < start + ms);
-  }
 
 function generateTimeSlot(number, filter) {
     const timeSlot = elementWithClasses("div", "timeSlot");
@@ -233,7 +229,6 @@ function generateTimeSlot(number, filter) {
     timeContainer.appendChild(h1);
     timeSlot.appendChild(timeContainer);
 
-    sleep(30);
     const jsonPromise = getJson(URL + "AppointmentsToday");
     jsonPromise.then(appointments => {
         appointments.forEach((item, index) => {
