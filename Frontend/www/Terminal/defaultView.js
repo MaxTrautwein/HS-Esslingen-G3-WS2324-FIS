@@ -1,5 +1,3 @@
-const URL = "http://localhost:5000/"
-
 window.addEventListener('load', () => defaultView.init());
 
 const defaultView = {
@@ -46,7 +44,6 @@ function generateDefault(filter) {
     }
 }
 
-
 function getJson(url) {
     return fetch(url, {
         method: 'GET',
@@ -65,7 +62,6 @@ function getJson(url) {
         console.error('Error fetching data:', error);
     });
 }
-
 
 
 function generateCancelled() {
@@ -100,6 +96,7 @@ function generateCancelled() {
                 });
             }
         });
+
     });
     
     newMain.appendChild(cancelledContainer);
@@ -261,12 +258,19 @@ function generateTimeSlot(number, filter) {
                 });
 
                 timeSlot.appendChild(appointment)
-            }
-        });
-    });
-    return timeSlot;
-}
 
+            }
+
+            const nameContainer = elementWithClasses("div", "name");
+            const roomContainer = elementWithClasses("div", "room");
+            const name = document.createElement("h2");
+            const room = document.createElement("h3");
+            name.innerText = item.name;
+            room.innerText = item.room;
+            nameContainer.appendChild(name);
+            roomContainer.appendChild(room);
+            appointment.appendChild(nameContainer);
+            appointment.appendChild(roomContainer);
 
 function generateDropdown(){
     const dropdown = document.getElementById("myDropdown");
@@ -278,6 +282,10 @@ function generateDropdown(){
         });
     });
 
+            timeSlot.appendChild(appointment)
+        }
+    });
+    return timeSlot;
 }
 
 const timeSlots = ["8:00", "9:45", "11:30", "14:00", "15:45", "17:15"]

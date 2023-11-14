@@ -16,9 +16,7 @@
     <link href="libs/fontawesome6/css/solid.css" rel="stylesheet">
 
     <link href="Lecturer.css" rel="stylesheet">
-
-
-
+    <link href="header.css" rel="stylesheet">
 </head>
 <body>
 
@@ -37,16 +35,41 @@
 </template>
 
 <header>
+    
+    <img class="logo" src="Terminal/images/HSLogo.svg">
 
-    <h1> TODO Add a Header</h1>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        SampleUser (<span id="UserID">1</span>)
+    </button>
 
 </header>
 
+<main>
 
-<div id="CardContainer" class="limiter">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Debug Change User</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input id="UserIDInput" type="number">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"  data-bs-dismiss="modal" onclick="UpdateUserID();">Change User</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="CardContainer" class="limiter">
 
 
-</div>
+    </div>
+</main>
+
 
 </body>
 </html>
