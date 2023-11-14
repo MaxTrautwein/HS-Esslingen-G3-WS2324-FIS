@@ -365,11 +365,16 @@ function generateAdd(item = example) {
             deleteAppointment(item.id);
         })
         reset.addEventListener("click", () => {
-
+            nameInput.value = item.name;
             lehrkraftInput.selectedIndex = item.lecturer;
             raumsucheInput.selectedIndex = item.room;
             zielgruppeInput.selectedIndex = item.groups[0];
-            wiederholungInput.selectedIndex = item.dateSpanData.repeat;
+            anfangInput.value = item.start;
+            endeInput.value = item.end;
+            tagInput.value = item.dateSpanData.startDate;
+            letzterTerminInput.value = item.dateSpanData.endDate;
+            wiederholungInput.value = item.dateSpanData.repeat;
+            beschreibungInput.value = item.description;
 
         });
     }
@@ -446,14 +451,21 @@ function uploadAdd(){
 
     var jsonData =  {dateSpanData, description, end, groups, id, lecturer, name, room, start}
 
-
-    if(id == 0){
-        console.log("erschaffe", jsonData);
-        PostJson(jsonData, URL + "CreateAppointment");
+    if(dateSpanData.endDate == "" || dateSpanData.repeat == 0 || dateSpanData.startDate == "" || description == "" || end == "" || groups[0] == 0 || lecturer == 0 || name == "" || room == 0 || start == ""){
+        showMessagePopup("Not all required fields are filled.", 3);
     }
-    else {
-        console.log("veraendere", jsonData);
-        PostJson(jsonData, URL + "UpdateAppointment");
+    else
+    {
+        if(id == 0){
+            console.log("erschaffe", jsonData);
+            PostJson(jsonData, URL + "CreateAppointment");
+            showMessagePopup("Successfully created Appointment!", 3);
+        }
+        else {
+            console.log("veraendere", jsonData);
+            PostJson(jsonData, URL + "UpdateAppointment");
+            showMessagePopup("Successfully changed Appointment!", 3);
+        }
     }
 
 }
@@ -580,6 +592,31 @@ function sleep(ms) {
     var start = new Date().getTime();
     while (new Date().getTime() < start + ms);
   }
+
+
+  function showMessagePopup(message, durationInSeconds) {
+    var popup = document.createElement('div');
+  
+    popup.style.position = 'fixed';
+    popup.style.top = '90%';
+    popup.style.left = '65%';
+    popup.style.transform = 'translate(-50%, -50%)';
+    popup.style.padding = '15px';
+    popup.style.border = '1px solid #ccc';
+    popup.style.backgroundColor = '#fff';
+    popup.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.1)';
+    popup.style.zIndex = '9999';
+  
+    popup.textContent = message;
+
+    document.body.appendChild(popup);
+
+    setTimeout(function () {
+      document.body.removeChild(popup);
+    }, durationInSeconds * 1000); 
+  }
+
+
 
 function generateTimeSlot(filter) {
     const timeSlot = elementWithClasses("div", "timeSlot");
