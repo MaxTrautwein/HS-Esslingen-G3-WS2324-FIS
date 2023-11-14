@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="utf-8">
+        <title>Admin View</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="terminal.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <script src="adminView.js"></script>
+        <script src="../libs/jquery-3.7.1.min.js"></script>
+    </head>
+    <body>
+        <header>
+            <div class="header">
+                <div class="studiengang">
+                    <select id="myDropdown" onchange="filter()">
+                        <script>
+                            generateDropdown();
+                        </script>
+
+                    </select>
+                </div>
+
+                <button class="addButton" id="addButton" onclick="generateAdd()"><i class="material-icons addIcon">add</i></button>
+               
+                <div class="admin">Admin</div>
+                    
+            </div>
+        </header>
+    </body>
+</html>

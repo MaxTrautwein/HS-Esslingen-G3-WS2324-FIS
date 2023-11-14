@@ -1,0 +1,476 @@
+:root {
+    --light-cold: #2a9d8f;
+    --dark-cold: #264653;
+    --light-warm: #f4a261;
+    --dark-warm: #e76f51;
+    --dark: #0a1316;
+    --light: #c6ced1;
+}
+
+*{
+    margin: 0;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+html, body{
+    height: 100%;
+}
+
+.limiter {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+main{
+    padding-top: 30px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.textC {
+    font-size:xx-large;
+    font-weight: bold;
+    text-align: left;
+}
+
+.header {
+    height: 12vh;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 5px solid red;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin{
+    text-align: center;
+    height: 3vh;
+    width: 20vh;
+    margin-right: 70vw;
+    font-size: 20px;
+}
+
+.addIcon {
+    font-size: 60px !important;
+    color: rgb(0, 185, 15);
+}
+
+.addButton{
+    background-color: white;
+    font-size: 20px;
+    display: flex;
+    margin-left: 2vw;
+    flex-direction: column;
+    border: none;
+}
+
+.textID{
+    color: white;
+    
+}
+
+input[type=text], textarea {
+    width: 50%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+  }
+  
+  label {
+    padding: 10px 10px 10px 0;
+    display: inline-block;
+  }
+
+  .col-25 {
+    float: left;
+    width: 25%;
+    margin-top: 6px;
+  }
+  
+  .col-75 {
+    float: left;
+    width: 75%;
+    margin-top: 6px;
+  }
+
+  .row::after {
+    content: "";
+    display: table;
+    clear: left;
+  }
+
+  #myDropdownR {
+    text-align: center;
+    height: 5vh;
+    width: 30vh;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+#myDropdownZ {
+    text-align: center;
+    height: 5vh;
+    width: 30vh;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+#myDropdownW {
+    text-align: center;
+    height: 5vh;
+    width: 30vh;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+#myDropdownL {
+    text-align: center;
+    height: 5vh;
+    width: 30vh;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+#myDropdown {
+    text-align: center;
+    height: 5vh;
+    width: 20vh;
+    margin-left: 2vw;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    font-size: 20px;
+}
+
+div.form
+{
+    display: block;
+    text-align: center;
+}
+form
+{
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+.editIcon {
+    display: flex;
+    text-align: right;
+    font-size: 20px !important;
+    color: rgb(162, 162, 162);
+    margin-left: 0vw;
+}
+
+
+.popo {
+    border: none;
+    background-color: transparent;
+}
+
+.editButton{
+    position: absolute;
+    background-color: transparent;
+    font-size: 20px;
+    display: flex;
+    margin-left: 6vw;
+    flex-direction: column;
+    border: none;
+}
+
+.saveIcon {
+    font-size: 35px !important;
+    color: rgb(0, 185, 15);
+}
+
+.saveIcon:hover{
+    font-size: 50px !important;
+}
+
+.saveButton{
+    position: absolute;
+    background-color: transparent;
+    font-size: 20px;
+    display: flex;
+    margin-left:5vw;
+    margin-top: 1.1vh;
+    flex-direction: column;
+    border: none;
+}
+
+.deleteIcon {
+    font-size: 35px !important;
+    color: rgb(255, 0, 0);
+}
+
+.deletIcon:hover {
+    font-size: 50px !important;
+}
+
+.deleteButton:hover{
+    font-size: 50px !important;
+}
+
+.reset{
+    margin-top: -4vh;
+    margin-left: -1.5vw;
+}
+
+.deleteButton{
+    position: absolute;
+    background-color: transparent;
+    font-size: 20px;
+    display: flex;
+    margin-top: -4vh;
+    margin-left: -8vw;
+    flex-direction: column;
+    border: none;
+}
+
+.backIcon {
+    font-size: 35px !important;
+    color: rgb(145, 145, 145);
+}
+
+.backButton{
+    background-color: transparent;
+    font-size: 20px;
+    position: absolute;
+    top: 120px;
+    left: 16px;
+    border: none;
+}
+
+header, footer {
+    background-color: white;
+}
+
+.header, .main, .footer{
+    padding: 0 0;
+}
+
+
+button:hover{
+    color: red;
+    cursor: pointer;
+}
+
+.timeSlot {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    min-height: 10vh;
+    margin-top: 0vw;
+}
+
+.timeContainer {
+    display: flex;
+    width: 4vw;
+    text-align: right;
+    padding-right: 30px;
+    align-items: center;
+}
+
+.appointment {
+    border: 1px solid black;
+    width: 20vw;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.appointment.cancelled {
+    background-color: rgb(189, 189, 189);
+}
+
+.appointment:hover, .cancelledAppointment:hover {
+    background-color: rgb(202, 201, 201);
+}
+
+.appointment>.name{
+    padding-top: 15px;
+    justify-content:space-between;
+    text-align: center;
+    width: 100%;
+}
+
+.upper{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width:100%;
+
+}
+
+.appointment>.room{
+    text-align: center;
+    width: 60%;
+}
+
+.addContainer {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    min-height: 8vh;
+}
+
+.addAppointment {
+    border: 1px solid black;
+    width: 10vw;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 8vh;
+}
+
+
+.cancelledContainer {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    min-height: 8vh;
+}
+
+.cancelledAppointment {
+    border: 1px solid black;
+    width: 10vw;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 8vh;
+}
+
+.add {
+    width: 80vw;
+    display: flex;
+    flex-direction: row;
+}
+
+.details {
+    width: 80vw;
+    display: flex;
+    flex-direction: row;
+}
+
+.textContainer{
+    font-size:x-large;
+    padding-left: 10vw;
+    line-height: 5vh;
+}
+
+.textContainer>.time{
+    font-size:x-large;
+    text-align: center;
+    line-height: 5vh;
+}
+
+#routeButton {
+    height: 100px;
+    align-self: flex-end;
+    margin-left: 10vw;
+    background: none;
+    border: none;
+    font-size: 50px;
+    color: rgb(0, 0, 180);
+}
+
+.mapIcon {
+    font-size: 60px !important;
+    color: rgb(0, 0, 180);
+}
+
+#routeButton:hover, .mapIcon:hover{
+    color: red;
+}
+
+.routeContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.imageContainer{
+    height: 100%;
+    width: 25vw;
+    display: flex;
+    background-position: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.imageContainer>img{
+    width: 100%;
+    border: 2px solid black;
+}
+
+.routeMiddleContainer{
+    height: 70%;
+    width: 25vw;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.routeSetting{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border: 1px solid black;
+    width: 30%;
+    height: 8vh;
+    font-size: xx-large;
+}
+
+.setting1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: rgb(197, 197, 197);
+    border: 1px solid grey;
+}
+
+.setting2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.setting1:hover, .setting2:hover{
+    background-color: rgb(245, 165, 165);
+}
+
+.settingIcon{
+    font-size: 50px !important;
+}
+
+
+
+
+
+
