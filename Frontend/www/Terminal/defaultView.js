@@ -1,3 +1,4 @@
+const URL = "http://localhost:5000/"
 window.addEventListener('load', () => defaultView.init());
 
 const defaultView = {
@@ -44,6 +45,26 @@ function generateDefault(filter) {
     }
 }
 
+function getJson(url) {
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+}
+
+
 function generateCancelled() {
     const oldMain = document.querySelector("main"); 
     const newMain = document.createElement("main");
@@ -51,29 +72,34 @@ function generateCancelled() {
     const cancelledContainer = elementWithClasses("div", "cancelledContainer")
     const date = document.createElement("h1");
     const currentDate = new Date();
-    date.innerText = `${currentDate.getDate()}.${currentDate.getMonth()+1}.${currentDate.getFullYear()} ausfallende Termine:`;
+    date.innerText = `Heute ist der ${currentDate.getDate()}.${currentDate.getMonth()+1}.${currentDate.getFullYear()} \n ausfallende Termine:`;
     cancelledContainer.appendChild(date);
 
-    Appointments.forEach((item, index) => {
-        if(item.canceld){
-            const appointment = elementWithClasses("div", "cancelledAppointment");
-            cancelledContainer.appendChild(appointment)
+    const jsonPromise = getJson(URL + "CanceledApp?dur=12");
+    jsonPromise.then(data => {
+        data.forEach((item, index) => {
+            if(item.canceld){
+                const appointment = elementWithClasses("div", "cancelledAppointment");
+                cancelledContainer.appendChild(appointment)
+    
+                const nameContainer = elementWithClasses("div", "name");
+                const name = document.createElement("h2");
+                name.innerText = item.name;
+                const date = document.createElement("h3");
+                date.innerText = item.date;
+                nameContainer.appendChild(name);
+                nameContainer.appendChild(date);
+                appointment.appendChild(nameContainer);
+    
+    
+                appointment.addEventListener("click", () => {
+                    generateDetails(item);
+                });
+            }
+        });
 
-            const nameContainer = elementWithClasses("div", "name");
-            const name = document.createElement("h2");
-            name.innerText = item.name;
-            nameContainer.appendChild(name);
-            appointment.appendChild(nameContainer);
-
-
-            appointment.addEventListener("click", () => {
-                generateDetails(item);
-            });
-        }
-            
     });
     
-
     newMain.appendChild(cancelledContainer);
 
     if (oldMain !== null) {
@@ -151,12 +177,23 @@ function generateDetails(item) {
 
     const text = elementWithClasses("div", "text");
 
+    const jsonPromise = getJson(URL + "GetLecturers");
+    jsonPromise.then(appointments => {
+        lecturerFirstName = appointments[item.lecturer].firstName;
+        lecturerLastName = appointments[item.lecturer].lastName;
+    });
+
+    const jsonPromise2 = getJson(URL + "Targetgroups");
+    jsonPromise2.then(appointments => {
+        group = appointments[item.groups[0]]
+    });
+
     text.innerHTML = `<br> Beginnt um ${item.start} und endet um ${item.end} <br>
                       Raum: ${item.room} <br>
-                      Zielgruppe: ${item.name} <br> 
-                      Lehrende Person: ${item.lecturer} <br> 
+                      Zielgruppe: ${group} <br> 
+                      Lehrende Person: ${lecturerFirstName} ${lecturerLastName}<br> 
                       Beschreibung: <br> 
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${item.details}`
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${item.description}`
     
     textContainer.appendChild(name);
     textContainer.appendChild(text);
@@ -179,6 +216,11 @@ function generateDetails(item) {
     }
 }
 
+function sleep(ms) {
+    var start = new Date().getTime();
+    while (new Date().getTime() < start + ms);
+  }
+
 function generateTimeSlot(number, filter) {
     const timeSlot = elementWithClasses("div", "timeSlot");
 
@@ -191,98 +233,51 @@ function generateTimeSlot(number, filter) {
     timeContainer.appendChild(h1);
     timeSlot.appendChild(timeContainer);
 
-    Appointments.forEach((item, index) => {
-        if((timeSlots[number] == item.start && filter == item.name) || (timeSlots[number] == item.start && filter == "all") ){
-            const appointment = elementWithClasses("div", "appointment");
-            if(item.canceld){
-                appointment.classList.add("cancelled");
+    sleep(30);
+    const jsonPromise = getJson(URL + "AppointmentsToday");
+    jsonPromise.then(appointments => {
+        appointments.forEach((item, index) => {
+            if((timeSlots[number] == item.start && item.groups.includes(Number(filter))) || (timeSlots[number] == item.start && filter == "all") ){
+                const appointment = elementWithClasses("div", "appointment");
+                if(item.canceld){
+                    appointment.classList.add("cancelled");
+                }
+
+                const nameContainer = elementWithClasses("div", "name");
+                const roomContainer = elementWithClasses("div", "room");
+                const name = document.createElement("h2");
+                const room = document.createElement("h3");
+                name.innerText = item.name;
+                room.innerText = item.room;
+                nameContainer.appendChild(name);
+                roomContainer.appendChild(room);
+                appointment.appendChild(nameContainer);
+                appointment.appendChild(roomContainer);
+
+                appointment.addEventListener("click", () => {
+                    generateDetails(item);
+                });
+
+                timeSlot.appendChild(appointment)
+
             }
-
-            const nameContainer = elementWithClasses("div", "name");
-            const roomContainer = elementWithClasses("div", "room");
-            const name = document.createElement("h2");
-            const room = document.createElement("h3");
-            name.innerText = item.name;
-            room.innerText = item.room;
-            nameContainer.appendChild(name);
-            roomContainer.appendChild(room);
-            appointment.appendChild(nameContainer);
-            appointment.appendChild(roomContainer);
-
-            appointment.addEventListener("click", () => {
-                generateDetails(item);
-            });
-
-            timeSlot.appendChild(appointment)
-        }
+       });
     });
     return timeSlot;
 }
+      
+
+function generateDropdown(){
+    const dropdown = document.getElementById("myDropdown");
+    dropdown.innerHTML = "<option value='all'>Alle</option>";
+    const jsonPromise = getJson(URL + "Targetgroups");
+    jsonPromise.then(data => {
+        data.forEach((item, index) => {
+            dropdown.innerHTML += `<option value='${index}'>${item}</option>`;
+        });
+    });
 
 
-const Appointments = [
-    {
-        id: 1,
-        name:"SWB1",
-        date:"Donnerstag 12.Oct",
-        start:"8:00",
-        end:"12:15",
-        details:"Some Sample text, idk",
-        room:"F1.401",
-        lecturer:"Der Große Obama",
-        canceld:false
-    },{
-        id: 2,
-        name:"SWB4",
-        date:"Donnerstag 12.Oct",
-        start:"9:45",
-        end:"12:15",
-        details:"Some Other Sample text, idk",
-        room:"F1.201",
-        lecturer:"Bach",
-        canceld:true
-    },{
-        id: 3,
-        name:"SWB5",
-        date:"Donnerstag 12.Oct",
-        start:"14:00",
-        end:"12:15",
-        details:"Some Sample text, idk",
-        room:"F1.431",
-        lecturer:"Deine Mum, lol",
-        canceld:false
-    },{
-        id: 4,
-        name:"SWB2",
-        date:"Donnerstag 12.Oct",
-        start:"17:15",
-        end:"12:15",
-        details:"Some Sample text, idk",
-        room:"F1.121",
-        lecturer:"Hallo",
-        canceld:false
-    },{
-        id: 5,
-        name:"SWB2",
-        date:"Donnerstag 12.Oct",
-        start:"17:15",
-        end:"12:15",
-        details:"Some Sample text, idk",
-        room:"F1.151",
-        lecturer:"o7",
-        canceld:true
-    },{
-        id: 6,
-        name:"SWB3",
-        date:"Donnerstag 12.Oct",
-        start:"14:00",
-        end:"00:00",
-        details:"Dominik, isst den Hund :(  (Nicht streicheln, er lügt, glaubt ihm nicht)",
-        room:"F10.965",
-        lecturer:"Maja",
-        canceld:true
-    }
-
-];
+}
 
 const timeSlots = ["8:00", "9:45", "11:30", "14:00", "15:45", "17:15"]
