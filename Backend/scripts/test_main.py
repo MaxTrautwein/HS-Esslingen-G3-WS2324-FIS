@@ -122,3 +122,40 @@ def test_Appointment(mocker):
     assert appointment.roomName == test_roomName
     assert appointment.canceled == test_canceled
     assert appointment.date == test_today
+
+
+def test_Appointment_toJson(mocker):
+    test_id = 1
+    test_name = "My Super Cool Appointment"
+    test_description = "my Description for my Appointment"
+    test_startTime = time(10, 0)
+    test_endTime = time(13, 0)
+    test_lecturer = 1
+    test_room = 2
+    test_dateSpan = 1
+    test_canceled = False
+    test_roomName = "Test Room Name"
+
+    abstract_appointment = Appointment.Appointment_Abstract(test_id, test_name, test_description, test_startTime
+                                                            , test_endTime, test_lecturer, test_room, test_dateSpan)
+
+    test_today = date.today()
+    test_db = db.Database(mock=True)
+
+    # Now we need to patch the Calls to the Database with the pytest-mocking
+    mocker.patch('db.Database.IsAppointmentCanceld').return_value = test_canceled
+    mocker.patch('db.Database.GetRoomName').return_value = test_roomName
+
+
+    appointment = Appointment.Appointment(abstract_appointment,test_today, test_db)
+    appointment_json = appointment.toJson()
+
+    assert appointment_json["id"] == test_id
+    assert appointment_json["name"] == test_name
+    assert appointment_json["description"] == test_description
+    assert appointment_json["start"] == test_startTime.strftime("%H:%M")
+    assert appointment_json["end"] == test_endTime.strftime("%H:%M")
+    assert appointment_json["lecturer"] == test_lecturer
+    assert appointment_json["room"] == test_roomName
+    assert appointment_json["canceld"] == test_canceled
+    assert appointment_json["date"] == test_today.strftime("%d.%m.%Y")
