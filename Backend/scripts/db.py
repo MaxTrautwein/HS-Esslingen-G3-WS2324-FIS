@@ -13,7 +13,9 @@ class Database:
     def __new__(cls, *args, **kwargs):
         return super().__new__(cls)
 
-    def __init__(self,dbName="postgres",user="postgres",host="postgres",pw="example"):
+    def __init__(self,dbName="postgres",user="postgres",host="postgres",pw="example",mock=False):
+        if (mock):
+            return
         self.con = psycopg2.connect(f"dbname='{dbName}' user='{user}' host='{host}' password='{pw}'")
         self.cur = self.con.cursor()
         try:

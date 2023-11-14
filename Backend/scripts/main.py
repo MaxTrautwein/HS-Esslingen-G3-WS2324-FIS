@@ -1,5 +1,5 @@
 import logging
-from flask import Flask, request, jsonify, render_template, abort, redirect
+from flask import Flask, request, jsonify, render_template, abort, redirect, g
 from flask_cors import CORS
 from datetime import datetime
 import db
@@ -17,22 +17,41 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 ch.setFormatter(formatter)
 logger.addHandler(ch)
 
-app = Flask(__name__)
-CORS(app)
 
-Database = db.Database()
+def create_app(testing=False):
+    _app = Flask(__name__)
+    CORS(_app)
+    if testing:
+        app.add_url_rule("/TEST", view_func=TestingTests)
+    return _app
+
+
+
+app = create_app()
+
+
+@app.before_request
+def InitDB():
+    g.Database = db.Database()
+
+
+@app.after_request
+def DeinitDB(data):
+    g.Database.DeInit()
+    return data
 
 @app.route('/')
 def GetAppointments():
     return render_template('index.html')
+
 
 @app.route('/Login', methods=['POST', 'GET'])
 def GetLogin():
     if request.method == 'POST':
         Username = request.form['username']
         Password = request.form['password']
-        return redirect()#hier nach merch die auf webserver redirecten
-        
+        return redirect()  # hier nach merch die auf webserver redirecten
+
     else:
         return render_template('login.html')
 
@@ -41,9 +60,11 @@ def GetLogin():
 def GetCanceled():
     return render_template('canceled.html')
 
+
 @app.route('/Lecturer')
 def GetLecturer():
     return render_template('lecturer.html')
+
 
 @app.route('/Admin')
 def GetAdmin():
@@ -57,33 +78,36 @@ def GetAppointmentsList():
         logger.info(request)
         abort(400)
     data = []
-    
-    Apps =  Database.GetAllAppointmetsFor(id)
+
+    Apps = g.Database.GetAllAppointmetsFor(id)
 
     for ap in Apps:
         data.append(ap.toJson())
-    
+
     return data
 
 
 @app.route('/UpdateCanceled', methods=['POST'])
 def UpdateCanceled():
     content = request.json
-    Database.UpdateCanceled(content["canceled"],content["id"],datetime.strptime(content["date"], "%d.%m.%Y"))
+    g.Database.UpdateCanceled(content["canceled"], content["id"], datetime.strptime(content["date"], "%d.%m.%Y"))
     return {}
+
 
 @app.get("/AppointmentsToday")
 def GetAppointmentsToday():
     data = []
-    Apps =  Database.GetAllAppointmetsToday()
-    
+    Apps = g.Database.GetAllAppointmetsToday()
+
     for ap in Apps:
         data.append(ap.toJson())
     return data
 
+
 @app.get("/Targetgroups")
 def GetTargetgroups():
-    return Database.GetAllGroups()
+    return g.Database.GetAllGroups()
+
 
 @app.get("/CanceledApp")
 def GetCanceledApps():
@@ -93,33 +117,38 @@ def GetCanceledApps():
         abort(400)
 
     data = []
-    Apps =  Database.GetAllCanceldAppointmetsForNDays(int(duration))
-    
+    Apps = g.Database.GetAllCanceldAppointmetsForNDays(int(duration))
+
     for ap in Apps:
         data.append(ap.toJson())
     return data
 
+
 @app.get("/GetRooms")
 def GetRooms():
-    return Database.GetAllRooms()
+    return g.Database.GetAllRooms()
+
 
 @app.route('/UpdateAppointment', methods=['POST'])
 def UpdateAppointment():
     content = request.json
     # I'm a bit lazy here, if this was a bigger project i should implement a proper Update
-    Database.DeleateFullAppointment(content['id'])
-    AppID = Database.CreateAppointment(content)
-    return {"Updated":AppID}
+    g.Database.DeleateFullAppointment(content['id'])
+    AppID = g.Database.CreateAppointment(content)
+    return {"Updated": AppID}
+
 
 @app.route('/CreateAppointment', methods=['POST'])
 def CreateAppointment():
     content = request.json
-    AppID = Database.CreateAppointment(content)
-    return {"Created":AppID} 
+    AppID = g.Database.CreateAppointment(content)
+    return {"Created": AppID}
+
 
 @app.get("/GetLecturers")
 def GetLecturers():
-    return Database.GetAllLecturers()
+    return g.Database.GetAllLecturers()
+
 
 @app.get("/AdminGetAppointment")
 def GetAdminAppointmentData():
@@ -127,11 +156,12 @@ def GetAdminAppointmentData():
     if (id is None):
         logger.info(request)
         abort(400)
-    App = Database.GetAppointmentByID(id)
-    App.resolveTargetGroups(Database)
+    App = g.Database.GetAppointmentByID(id)
+    App.resolveTargetGroups(g.Database)
     AppJson = App.toJson()
-    AppJson["dateSpanData"] = Database.GetDateSpanByID(AppJson["dateSpan"]) 
+    AppJson["dateSpanData"] = g.Database.GetDateSpanByID(AppJson["dateSpan"])
     return AppJson
+
 
 @app.get("/DeleteAppointment")
 def DeleteAppointment():
@@ -139,9 +169,10 @@ def DeleteAppointment():
     if (id is None):
         logger.info(request)
         abort(400)
-    Database.DeleateFullAppointment(id)
-    return {} 
+    g.Database.DeleateFullAppointment(id)
+    return {}
+
 
 @app.get("/GetAdminAppointmentIDs")
 def GetAdminAppointmentIDs():
-    return Database.GetAllAppointmentsForAdminDefault()
+    return g.Database.GetAllAppointmentsForAdminDefault()
