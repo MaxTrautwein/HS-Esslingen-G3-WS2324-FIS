@@ -109,6 +109,7 @@ function generateCancelled() {
 
 
 function generateRoute(room) {
+    console.log(room);
     const oldMain = document.querySelector("main"); 
     const newMain = document.createElement("main");
     
@@ -119,7 +120,7 @@ function generateRoute(room) {
     const imageContainer2 = elementWithClasses("div", "imageContainer");
 
     const image1 = document.createElement("img");
-    image1.src = "images/route1.png";
+    image1.src = "images/routeEG.png";
     imageContainer1.appendChild(image1);
 
     const title = elementWithClasses("div", "title");
@@ -133,7 +134,7 @@ function generateRoute(room) {
     textContainer.appendChild(title);
 
     const direction = document.createElement("h3");
-    direction.innerHTML = "Aufzug nach Stock 1 <br> -------------------------------------->";
+    direction.innerHTML = "Aufzug oder Treppe nach Stock 4 <br> -------------------------------------->";
     textContainer.appendChild(direction);
 
     const routeSetting = elementWithClasses("div", "routeSetting");
@@ -148,7 +149,19 @@ function generateRoute(room) {
     textContainer.appendChild(routeSetting);
 
     const image2 = document.createElement("img");
-    image2.src = "images/route2.png";
+    if(room[0] == "F1.405"){
+        image2.src = "images/route405.png";
+    }
+    else if(room[0] == "F1.408"){
+        image2.src = "images/route408.png";
+    }
+    else if(room[0] == "F1.411"){
+        image2.src = "images/route411.png";
+    }
+    else {
+        image2.src = "images/Vorlage.png";
+    }
+    
     imageContainer2.appendChild(image2);
 
     routeContainer.appendChild(imageContainer1);
@@ -216,10 +229,6 @@ function generateDetails(item) {
     }
 }
 
-function sleep(ms) {
-    var start = new Date().getTime();
-    while (new Date().getTime() < start + ms);
-  }
 
 function generateTimeSlot(number, filter) {
     const timeSlot = elementWithClasses("div", "timeSlot");
@@ -233,7 +242,6 @@ function generateTimeSlot(number, filter) {
     timeContainer.appendChild(h1);
     timeSlot.appendChild(timeContainer);
 
-    sleep(30);
     const jsonPromise = getJson(URL + "AppointmentsToday");
     jsonPromise.then(appointments => {
         appointments.forEach((item, index) => {
