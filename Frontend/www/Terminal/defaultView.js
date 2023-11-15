@@ -288,4 +288,4 @@ function generateDropdown(){
 
 }
 
-const timeSlots = ["8:00", "9:45", "11:30", "14:00", "15:45", "17:15"]
+const timeSlots = ["08:00", "09:45", "11:30", "14:00", "15:45", "17:15"]
