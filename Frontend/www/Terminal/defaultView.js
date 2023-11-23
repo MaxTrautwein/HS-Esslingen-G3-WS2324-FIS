@@ -120,7 +120,7 @@ function generateRoute(room) {
     const imageContainer2 = elementWithClasses("div", "imageContainer");
 
     const image1 = document.createElement("img");
-    image1.src = "images/routeEG.png";
+    image1.src = "images/RouteEG.png";
     imageContainer1.appendChild(image1);
 
     const title = elementWithClasses("div", "title");
@@ -150,13 +150,13 @@ function generateRoute(room) {
 
     const image2 = document.createElement("img");
     if(room[0] == "F1.405"){
-        image2.src = "images/route405.png";
+        image2.src = "images/Route405.png";
     }
     else if(room[0] == "F1.408"){
-        image2.src = "images/route408.png";
+        image2.src = "images/Route408.png";
     }
     else if(room[0] == "F1.411"){
-        image2.src = "images/route411.png";
+        image2.src = "images/Route411.png";
     }
     else {
         image2.src = "images/Vorlage.png";
